@@ -1,5 +1,5 @@
 body{
-    background-color: #222222;
+    background-color: #000000;
 }
 #root{
     display: flex;
@@ -42,9 +42,14 @@ body{
 }
 .card-slot{
     display: flex;
+    flex-direction: column;
     border-top-style: groove ;
     border-width: 10px;
     justify-content: center;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+
 }
 .new{
  background-color: #590000;
@@ -63,10 +68,9 @@ body{
     color: #cdcdcd;
     border: #222222;
     border-style: groove;
-    display: flex;
-    background: #525900;
     height: 25px;
     width: 90%;
+    display: flex;
     justify-content: center;
     text-align: center;
     align-items: center;
