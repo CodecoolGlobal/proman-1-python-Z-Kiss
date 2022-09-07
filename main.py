@@ -9,6 +9,7 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = 'fafsa'
 
+
 @app.route("/")
 def index():
     """
