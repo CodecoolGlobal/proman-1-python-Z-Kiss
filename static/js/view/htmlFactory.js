@@ -54,8 +54,4 @@ function cardBuilder(card) {
 
 }
 
-function  statusBuilder(status) {
-    return `<div class="status-container" data-status="${status.id}">
-</div>`
-}
 
