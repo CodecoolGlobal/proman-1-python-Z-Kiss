@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session
+from flask import Flask, render_template, url_for, session, redirect
 from dotenv import load_dotenv
 from util import json_response
 import mimetypes
@@ -8,7 +8,6 @@ mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
 load_dotenv()
 app.secret_key = 'fafsa'
-
 
 @app.route("/")
 def index():
