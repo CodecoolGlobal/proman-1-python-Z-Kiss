@@ -1,5 +1,5 @@
 body{
-    background-color: #000000;
+    background-color: #58de83;
 }
 #root{
     display: flex;
@@ -52,7 +52,7 @@ body{
 
 }
 .new{
- background-color: #590000;
+    background-color: #590000;
 }
 .in-progress{
     background-color: #594300;
@@ -68,12 +68,13 @@ body{
     color: #cdcdcd;
     border: #222222;
     border-style: groove;
-    height: 25px;
+    min-height: 25px;
     width: 90%;
     display: flex;
     justify-content: center;
     text-align: center;
     align-items: center;
     align-content: center;
+    margin-bottom: 5px;
 }
 

@@ -1,11 +1,13 @@
 export const htmlTemplates = {
     board: 1,
-    card: 2
+    card: 2,
+    reg: 3
 }
 
 export const builderFunctions = {
     [htmlTemplates.board]: boardBuilder,
-    [htmlTemplates.card]: cardBuilder
+    [htmlTemplates.card]: cardBuilder,
+    [htmlTemplates.reg]: registerBuilder
 };
 
 export function htmlFactory(template) {
@@ -52,5 +54,39 @@ function cardBuilder(card) {
     return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}">${card.title}</div>`;
 
 
+}
+
+function loginBuilder(){
+    return `
+    <div class="login-container">
+        <div class="login-box">
+            <form action="/login" method="post">
+            <div>Login</div>
+            <label for="email">E-mail address</label>
+            <input type="email" name="email">
+            <label for="password">Password</label>
+            <input type="text" name="password">
+            <button type="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+    `
+}
+function registerBuilder(){
+    return `<div class="reg-container">
+            <div class="reg-box">
+            <form action="/register" method="post">
+            <div>Register</div>
+            <label for="username">User name</label>
+            <input type="text" name="username">
+            <label for="email">E-mail address</label>
+            <input type="email" name="email">
+            <label for="password">Password</label>
+            <input type="text" name="password">
+            <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+    `
 }
 

@@ -7,14 +7,21 @@ import queries
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
 load_dotenv()
+app.secret_key = 'fafsa'
 
 @app.route("/")
 def index():
     """
     This is a one-pager which shows all the boards and cards
     """
+    if not session:
+        session['user'] = 'Guest'
     return render_template('index.html')
 
+# @app.route("/register")
+# def register():
+#
+#     return
 
 @app.route("/api/boards")
 @json_response
