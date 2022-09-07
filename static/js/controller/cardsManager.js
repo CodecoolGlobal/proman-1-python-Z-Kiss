@@ -25,7 +25,9 @@ function deleteButtonHandler(clickEvent) {
     const cardId = clickEvent.currentTarget.dataset.cardId
     dataHandler.deleteCard(cardId).then( (id) => {
         console.log(id.id)
-        boardsManager.loadBoards()
+        const card = document.querySelector(`.card[data-card-id="${id.id}"]`)
+        console.log(card)
+        card.remove()
     })
 }
  function addClassToCard(card){
