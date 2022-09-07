@@ -1,6 +1,7 @@
 import {dataHandler} from "../data/dataHandler.js";
 import {htmlFactory, htmlTemplates} from "../view/htmlFactory.js";
 import {domManager} from "../view/domManager.js";
+import {boardsManager} from "./boardsManager.js";
 
 export let cardsManager = {
     loadCards: async function (boardId) {
@@ -12,7 +13,7 @@ export let cardsManager = {
             domManager.addChild(`.card-slot[data-board-id="${boardId}"][data-status="${card.status_id}"]`, content);
             addClassToCard(card)
             domManager.addEventListener(
-                `.card[data-card-id="${card.id}"]`,
+                `.delete-btn[data-card-id="${card.id}"]`,
                 "click",
                 deleteButtonHandler
             );
@@ -21,7 +22,11 @@ export let cardsManager = {
 };
 
 function deleteButtonHandler(clickEvent) {
-
+    const cardId = clickEvent.currentTarget.dataset.cardId
+    dataHandler.deleteCard(cardId).then( (id) => {
+        console.log(id.id)
+        boardsManager.loadBoards()
+    })
 }
  function addClassToCard(card){
     let builtCard = document.querySelector(`.card[data-card-id="${card.id}"]`)

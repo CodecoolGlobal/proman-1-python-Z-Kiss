@@ -71,9 +71,16 @@ body{
     min-height: 25px;
     width: 90%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     text-align: center;
     align-items: center;
     align-content: center;
 }
 
+
+.delete-btn {
+    display: flex;
+    justify-items: end;
+    background-color: transparent;
+    border: none;
+}
