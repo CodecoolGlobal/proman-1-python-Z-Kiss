@@ -17,9 +17,16 @@ export let boardsManager = {
             );
         }
     },
+    clearCardSlot: async function (boardId) {
+        let cardSlots = document.querySelectorAll(`.card-slot[data-board-id="${boardId}"]`)
+        for (const slot of cardSlots) {
+            slot.replaceChildren()
+        }
+    }
 };
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
+    boardsManager.clearCardSlot(boardId)
     cardsManager.loadCards(boardId);
 }
