@@ -42,19 +42,8 @@ def get_cards_for_board(board_id):
         """
         SELECT * FROM cards
         WHERE cards.board_id = %(board_id)s
-        ORDER BY status_id, card_order 
-        ;
+        ORDER BY status_id, card_order;
         """
         , {"board_id": board_id})
 
     return matching_cards
-
-
-def get_statuses():
-    status = data_manager.execute_select(
-        """
-        SELECT * FROM statuses 
-        ORDER BY statuses.id""")
-    return status
-
-
