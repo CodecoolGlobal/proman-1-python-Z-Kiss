@@ -15,6 +15,16 @@
         <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
     </head>
     <body>
+        <div class="navbar">
+            <div>
+                <img src="/static/favicon/favicon-96x96.png" alt="favicon">
+                <div>Hy {{ session.user }}</div>
+            </div>
+            <div>
+                <button>Login</button>
+                <button>Register</button>
+            </div>
+        </div>
         <div id="root"></div>
     </body>
 </html>

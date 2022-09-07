@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, session, redirect
 from dotenv import load_dotenv
 from util import json_response
 import mimetypes
@@ -7,15 +7,21 @@ import queries
 mimetypes.add_type('application/javascript', '.js')
 app = Flask(__name__)
 load_dotenv()
-
+app.secret_key = 'fafsa'
 
 @app.route("/")
 def index():
     """
     This is a one-pager which shows all the boards and cards
     """
+    if not session:
+        session['user'] = 'Guest'
     return render_template('index.html')
 
+# @app.route("/register")
+# def register():
+#
+#     return
 
 @app.route("/api/boards")
 @json_response
@@ -36,15 +42,8 @@ def get_cards_for_board(board_id: int):
     return queries.get_cards_for_board(board_id)
 
 
-@app.route("/api/statuses")
-@json_response
-def get_statuses():
-    return queries.get_statuses()
-
-
 def main():
-    app.run(debug=True,
-            port=8000)
+    app.run(debug=True)
 
     # Serving the favicon
     with app.app_context():
