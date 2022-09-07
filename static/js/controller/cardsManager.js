@@ -11,6 +11,8 @@ export let cardsManager = {
 
             domManager.addChild(`.card-slot[data-board-id="${boardId}"][data-status="${card.status_id}"]`, content);
             addClassToCard(card)
+            let cardTitle = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
+            cardTitle.innerText = "valami"
             domManager.addEventListener(
                 `.card[data-card-id="${card.id}"]`,
                 "click",

@@ -55,7 +55,7 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}">${card.title}</div>`;
+    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span></div>`;
 
 
 }
@@ -77,18 +77,27 @@ function loginBuilder(){
     `
 }
 function registerBuilder(){
-    return `<div class="reg-container">
-            <div class="reg-box">
-            <form action="/register" method="post">
-            <div>Register</div>
-            <label for="username">User name</label>
-            <input type="text" name="username">
-            <label for="email">E-mail address</label>
-            <input type="email" name="email">
-            <label for="password">Password</label>
-            <input type="text" name="password">
-            <button type="submit">Register</button>
-            </form>
+    return `
+    <div class="reg-container">
+        <div class="reg-box">
+                <div class="reg-button">
+                    <div>Register</div>
+                    <button id="close">X</button>
+                </div>
+                
+                <div>
+                    <label for="username">User name</label><br>
+                    <input type="text" name="username">
+                </div>
+                <div>
+                    <label for="email">E-mail address</label><br>
+                    <input type="email" name="email">
+                </div>
+                <div>
+                    <label for="password">Password</label><br>
+                    <input type="text" name="password">
+                </div>
+                <button id="reg">Register</button>
         </div>
     </div>
     `

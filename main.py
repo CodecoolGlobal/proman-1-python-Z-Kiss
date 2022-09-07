@@ -18,10 +18,9 @@ def index():
         session['user'] = 'Guest'
     return render_template('index.html')
 
-# @app.route("/register")
-# def register():
-#
-#     return
+@app.route("/register")
+def register():
+pass
 
 @app.route("/api/boards")
 @json_response

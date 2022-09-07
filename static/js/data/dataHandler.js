@@ -23,6 +23,9 @@ export let dataHandler = {
     createNewCard: async function (cardTitle, boardId, statusId) {
         // creates new card, saves it and calls the callback function with its data
     },
+    registerUser: async function (userData) {
+        return await apiPost("/registration",userData)
+    }
 };
 
 async function apiGet(url) {
@@ -35,6 +38,19 @@ async function apiGet(url) {
 }
 
 async function apiPost(url, payload) {
+    let response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    if (response === 200) {
+        let data = response.json()
+        return data
+    } else {
+        alert('hahoooo')
+    }
 }
 
 async function apiDelete(url) {
