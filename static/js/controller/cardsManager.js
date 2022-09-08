@@ -5,6 +5,7 @@ import {boardsManager} from "./boardsManager.js";
 
 export let cardsManager = {
     loadCards: async function (boardId) {
+        boardsManager.clearCardSlot(boardId)
         const cards = await dataHandler.getCardsByBoardId(boardId);
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
