@@ -15,8 +15,22 @@ export let cardsManager = {
                 "click",
                 deleteButtonHandler
             );
+            this.renameCards(card)
+
         }
     },
+    renameCards: function(card) {
+        const rename = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
+        rename.addEventListener('dblclick', (event)=> {
+            event.target.innerHTML = `<input id="input-field" type="text">`
+            const input_field = document.querySelector('input')
+            input_field.addEventListener('change', async (event) => {
+                let currentCard = document.querySelector(`.card[data-card-id="${card.id}"]`)
+                dataHandler.renameCard(event.currentTarget.value, currentCard.dataset.cardId)
+                rename.innerHTML = `<span>${event.currentTarget.value}`
+            })
+        })
+    }
 };
 
 function deleteButtonHandler(clickEvent) {

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 from dotenv import load_dotenv
 from util import json_response
 import mimetypes
@@ -40,6 +40,13 @@ def get_cards_for_board(board_id: int):
 @json_response
 def get_statuses():
     return queries.get_statuses()
+
+
+@app.route("/api/cards", methods=['PATCH'])
+@json_response
+def change_title():
+    card_data = request.get_json()
+    return queries.change_title(card_data)
 
 
 def main():

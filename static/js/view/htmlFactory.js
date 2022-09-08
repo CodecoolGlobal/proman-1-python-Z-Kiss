@@ -49,13 +49,9 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}">${card.title}</div>`;
+    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span></div>`;
 
 
 }
 
-function  statusBuilder(status) {
-    return `<div class="status-container" data-status="${status.id}">
-</div>`
-}
 
