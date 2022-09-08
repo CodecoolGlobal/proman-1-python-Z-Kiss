@@ -52,10 +52,11 @@ function showHideButtonHandler(clickEvent) {
 
 function deleteButtonHandler(clickEvent) {
     const boardId = clickEvent.currentTarget.dataset.boardId
+    console.log(boardId)
     dataHandler.deleteBoard(boardId).then( (id) => {
 
-        console.log(id.id)
-        const board = document.querySelector(`.board[data-board-id="${id.id}"]`)
+        console.log('id:', id)
+        const board = document.querySelector(`.board[data-board-id="${boardId}"]`)
         console.log(board)
         board.remove()
     })
