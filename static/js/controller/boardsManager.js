@@ -24,6 +24,12 @@ export let boardsManager = {
             );
             this.renameBoards(board)
 
+            domManager.addEventListener(
+                `.add-new-card[data-board-id = "${board.id}"]`,
+                'click',
+                (event) => this.addNewCard(event)
+            );
+
         }
     },
     clearCardSlot: async function (boardId) {
@@ -49,15 +55,25 @@ export let boardsManager = {
         const boardTitleBuilder = htmlFactory(htmlTemplates.boardTitle);
         const boardTitle = boardTitleBuilder();
         domManager.addChild('#root', boardTitle)
-        domManager.addEventListener('input','change', async (event) => {
+        domManager.addEventListener('input', 'change', async (event) => {
             let inputTitle = event.currentTarget.value
             await dataHandler.createNewBoard(inputTitle)
             const root = document.querySelector('#root')
             root.replaceChildren()
             boardsManager.loadBoards()
 
-        } )
+        })
     },
+    addNewCard: function (event) {
+        const addCardBuilder = htmlFactory(htmlTemplates.addCard);
+        const addCard = addCardBuilder();
+        domManager.addChild(`.card-slot[data-board.id='${event.currentTarget.dataset.boardId}'][data-status="${event.currentTarget.dataset.status}"]`, addCard)
+        domManager.addEventListener('input', 'change', async (event) => {
+            let inputCardTitle = event.currentTarget.value
+            console.log(inputCardTitle)
+
+        })
+    }
 };
 
 function showHideButtonHandler(clickEvent) {
