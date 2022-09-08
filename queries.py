@@ -54,11 +54,12 @@ def register_user(user_data):
     returning id
     """, {"user_name": user_data['name'], "user_email": user_data['email'], "user_password": user_data['psw']}, False)
 
-def get_password(user_name):
+def get_password_by_email(user_email):
     return data_manager.execute_select(
-        """SELECT password FROM user_data
-           WHERE name = %(user_name)s""",
-        {"user_name": user_name}, False )
+        """SELECT name, password FROM user_data
+           WHERE email = %(user_email)s
+           """,
+        {"user_email": user_email}, False)
 
 def add_new_board(title):
 

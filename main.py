@@ -30,14 +30,14 @@ def register():
     #     return jsonify("id": psycopg2.errors.UniqueViolation)
     return jsonify(queries.register_user(user_data))
 
-@app.route("/login")
+@app.route("/login", methods=['POST'])
 @json_response
 def login():
     user_data = request.get_json()
-    hashed_psw = queries.get_password(user_data['name'])
-    if util.verify_password(user_data['psw'], hashed_psw):
-        session['user'] = user_data
-    return user_data
+    user_info = queries.get_password_by_email(user_data['email'])
+    if util.verify_password(user_data['psw'], user_info['password']):
+        session['user'] = user_info['name']
+    return {"username": user_info['name']}
 
 
 @app.route("/api/boards/create", methods=['POST'])
@@ -50,6 +50,9 @@ def get_boards():
     if request.method == 'GET':
         return queries.get_boards()
 
+@app.route("/logout")
+def logout():
+    session.clear()
 
 @app.route("/api/boards/<int:board_id>/cards/")
 @json_response

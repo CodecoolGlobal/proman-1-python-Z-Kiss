@@ -49,6 +49,7 @@ export let dataHandler = {
             'psw': userData[1].value
         }
         let response = await apiPost("/login", payload)
+        console.log(response)
     },
 
     renameCard: async function (cardTitle, cardId) {
@@ -77,18 +78,16 @@ async function apiGet(url) {
 }
 
 async function apiPost(url, payload) {
-    await fetch(url, {
+    let response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json'
         }
+
     })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            return data
-        })
+      return response.json()
+
 }
 
 async function apiDelete(url) {
