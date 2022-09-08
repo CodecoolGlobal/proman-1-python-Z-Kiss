@@ -56,13 +56,12 @@ function boardBuilder(board) {
 
 function cardBuilder(card) {
     return `
-            <div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}">${card.title}
+            <div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span>
                 <button class="delete-btn" data-card-id="${card.id}">
                     <i class="fa fa-trash-o"></i>
                 </button>
             </div>`;
 
-    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span></div>`;
 
 }
 
