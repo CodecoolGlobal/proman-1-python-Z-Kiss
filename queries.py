@@ -47,3 +47,14 @@ def get_cards_for_board(board_id):
         , {"board_id": board_id})
 
     return matching_cards
+
+
+def add_new_board(title):
+
+    return data_manager.execute_select(
+        """
+        INSERT INTO  boards (title)
+        VALUES (%(title)s)
+        RETURNING id,title;
+        """
+    , {"title":title}, False)

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, session, redirect
+from flask import Flask, render_template, url_for, session, redirect, request, jsonify
 from dotenv import load_dotenv
 from util import json_response
 import mimetypes
@@ -23,13 +23,17 @@ def index():
 #
 #     return
 
+
+@app.route("/api/boards/create",methods=['GET','POST'])
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    """
-    All the boards
-    """
-    return queries.get_boards()
+    if request.method == 'POST':
+        title = request.get_json()
+        return queries.add_new_board(request.json["title"])
+    if request.method == 'GET':
+        return queries.get_boards()
+
 
 
 @app.route("/api/boards/<int:board_id>/cards/")
