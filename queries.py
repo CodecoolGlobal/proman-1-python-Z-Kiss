@@ -55,3 +55,17 @@ def delete_card_by_id(card_id):
         RETURNING id;
     '''
     return data_manager.execute_select(query, {'card_id': card_id}, False)
+
+
+def register_user(user_data):
+    data_manager.execute_select(
+    """INSERT INTO user_data (name, email, password)
+    VALUES (%(user_name)s, %(user_email)s, %(user_password)s)
+    returning id
+    """, {"user_name": user_data['name'], "user_email": user_data['email'], "user_password": user_data['psw']}, False)
+
+def get_password(user_name):
+    return data_manager.execute_select(
+        """SELECT password FROM user_data
+           WHERE name = %(user_name)s""",
+        {"user_name": user_name}, False )

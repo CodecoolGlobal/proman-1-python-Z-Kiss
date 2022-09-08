@@ -6,14 +6,13 @@ import {boardsManager} from "./boardsManager.js";
 export let cardsManager = {
     loadCards: async function (boardId) {
         const cards = await dataHandler.getCardsByBoardId(boardId);
+        console.log(cards)
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
             const content = cardBuilder(card);
-
             domManager.addChild(`.card-slot[data-board-id="${boardId}"][data-status="${card.status_id}"]`, content);
             addClassToCard(card)
             let cardTitle = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
-            cardTitle.innerText = "valami"
             domManager.addEventListener(
                 `.delete-btn[data-card-id="${card.id}"]`,
                 "click",

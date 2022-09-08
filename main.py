@@ -1,6 +1,8 @@
-from flask import Flask, render_template, url_for, session, redirect
+import psycopg2.errors
+from flask import Flask, render_template, url_for, session, redirect, request, jsonify
 from dotenv import load_dotenv
 from util import json_response
+import util
 import mimetypes
 import queries
 
@@ -14,13 +16,28 @@ def index():
     """
     This is a one-pager which shows all the boards and cards
     """
-    if not session:
-        session['user'] = 'Guest'
+    session.clear()
+    session['user'] = 'Guest'
     return render_template('index.html')
 
-@app.route("/register")
+@app.route("/register", methods=['POST'] )
 def register():
-pass
+    user_data = request.get_json()
+    user_data['psw'] = util.hash_password(user_data['psw'])
+    # try:
+    #     return jsonify(queries.register_user(user_data))
+    # except psycopg2.errors.UniqueViolation:
+    #     return jsonify("id": psycopg2.errors.UniqueViolation)
+    return jsonify(queries.register_user(user_data))
+
+@app.route("/login")
+@json_response
+def login():
+    user_data = request.get_json()
+    hashed_psw = queries.get_password(user_data['name'])
+    if util.verify_password(user_data['psw'], hashed_psw):
+        session['user'] = user_data
+    return user_data
 
 @app.route("/api/boards")
 @json_response

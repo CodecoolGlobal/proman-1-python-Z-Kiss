@@ -14,8 +14,8 @@ export let dataHandler = {
         // the status is retrieved and then the callback function is called with the status
     },
     getCardsByBoardId: async function (boardId) {
-        const response = await apiGet(`/api/boards/${boardId}/cards/`);
-        return response
+        return await apiGet(`/api/boards/${boardId}/cards/`);
+
     },
     deleteCard: async function (cardId) {
          const response = apiDelete(`/api/cards/${cardId}`);
@@ -33,8 +33,22 @@ export let dataHandler = {
         // creates new card, saves it and calls the callback function with its data
     },
     registerUser: async function (userData) {
-        return await apiPost("/registration",userData)
+
+        let payload = {
+            'name': userData[0].value,
+            'email': userData[1].value,
+            'psw': userData[2].value
+        }
+         let response = await apiPost("/register", payload)
+    },
+    loginUser: async function (userData){
+        let payload = {
+            'email': userData[0].value,
+            'psw': userData[1].value
+        }
+        let response = await apiPost("/login", payload)
     }
+
 };
 
 async function apiGet(url) {
@@ -54,12 +68,7 @@ async function apiPost(url, payload) {
         },
         body: JSON.stringify(payload)
     })
-    if (response === 200) {
-        let data = response.json()
-        return data
-    } else {
-        alert('hahoooo')
-    }
+
 }
 
 async function apiDelete(url) {

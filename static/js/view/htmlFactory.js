@@ -1,13 +1,15 @@
 export const htmlTemplates = {
     board: 1,
     card: 2,
-    reg: 3
+    reg: 3,
+    log: 4
 }
 
 export const builderFunctions = {
     [htmlTemplates.board]: boardBuilder,
     [htmlTemplates.card]: cardBuilder,
-    [htmlTemplates.reg]: registerBuilder
+    [htmlTemplates.reg]: registerBuilder,
+    [htmlTemplates.log]: loginBuilder
 };
 
 export function htmlFactory(template) {
@@ -55,32 +57,34 @@ function boardBuilder(board) {
 }
 
 function cardBuilder(card) {
-<<<<<<< HEAD
-    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span></div>`;
-=======
     return `
             <div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}">${card.title}
                 <button class="delete-btn" data-card-id="${card.id}">
                     <i class="fa fa-trash-o"></i>
                 </button>
             </div>`;
->>>>>>> development
+
 
 
 }
 
 function loginBuilder(){
     return `
-    <div class="login-container">
-        <div class="login-box">
-            <form action="/login" method="post">
-            <div>Login</div>
-            <label for="email">E-mail address</label>
-            <input type="email" name="email">
-            <label for="password">Password</label>
-            <input type="text" name="password">
-            <button type="submit">Log in</button>
-            </form>
+    <div class="reg-container">
+        <div class="reg-box">
+                <div class="reg-button">
+                    <div>Loginr</div>
+                    <button id="close">X</button>
+                </div>
+                <div>
+                    <label for="email">E-mail address</label><br>
+                    <input type="email" name="email">
+                </div>
+                <div>
+                    <label for="password">Password</label><br>
+                    <input type="text" name="password">
+                </div>
+                <button id="ok" data-func="log">Login</button>
         </div>
     </div>
     `
@@ -106,7 +110,7 @@ function registerBuilder(){
                     <label for="password">Password</label><br>
                     <input type="text" name="password">
                 </div>
-                <button id="reg">Register</button>
+                <button id="ok" data-func="reg">Register</button>
         </div>
     </div>
     `
