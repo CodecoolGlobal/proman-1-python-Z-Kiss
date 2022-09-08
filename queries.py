@@ -55,3 +55,11 @@ def delete_card_by_id(card_id):
         RETURNING id;
     '''
     return data_manager.execute_select(query, {'card_id': card_id}, False)
+
+
+def delete_board_by_id(board_id):
+    query = '''
+        DELETE FROM boards WHERE id=%(id)s
+        RETURNING id;
+    '''
+    return data_manager.execute_select(query, {'id': board_id}, False)

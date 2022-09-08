@@ -17,6 +17,10 @@ export let boardsManager = {
                 "click",
                 showHideButtonHandler
             );
+            domManager.addEventListener(`.delete-board-btn[data-board-id="${board.id}"]`,
+                "click",
+                deleteButtonHandler
+            );
         }
     },
 };
@@ -25,3 +29,15 @@ function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
     cardsManager.loadCards(boardId);
 }
+
+function deleteButtonHandler(clickEvent) {
+    const boardId = clickEvent.currentTarget.dataset.boardId
+    dataHandler.deleteBoard(boardId).then( (id) => {
+
+        console.log(id.id)
+        const board = document.querySelector(`.board[data-board-id="${id.id}"]`)
+        console.log(board)
+        board.remove()
+    })
+}
+
