@@ -67,6 +67,20 @@ def delete_card_by_id(card_id: int):
     return queries.delete_card_by_id(card_id)
 
 
+@app.route("/api/cards", methods=['PATCH'])
+@json_response
+def change_title():
+    card_data = request.get_json()
+    return queries.change_title(card_data)
+
+
+@app.route("/api/boards", methods=['PATCH'])
+@json_response
+def change_title_for_board():
+    board_data = request.get_json()
+    return queries.change_title_board(board_data)
+
+
 def main():
     app.run(debug=True)
 

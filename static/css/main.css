@@ -84,7 +84,7 @@ body{
     background: #2cc41b;
 }
 
-<<<<<<< HEAD
+
 .navbar-button{
     display: flex;
     flex-direction: column;
@@ -126,7 +126,11 @@ body{
     flex-direction: row;
     width: max-content;
 }
-=======
+
+input {
+    background-color: dimgrey;
+    width: 100px
+}
 
 .delete-btn {
     display: flex;
@@ -134,4 +138,3 @@ body{
     background-color: transparent;
     border: none;
 }
->>>>>>> development
