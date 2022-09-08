@@ -77,7 +77,7 @@ function cardBuilder(card) {
 
 function addNewCard() {
     return `
-            <div class="card"><span><input type="text" id="add-card-input" name="add-card-input"></span>
+            <div class="card"><span><input type="text" id="add-card-input" name="add-card-input" draggable="true"></span>
             </div>`;
 }
 

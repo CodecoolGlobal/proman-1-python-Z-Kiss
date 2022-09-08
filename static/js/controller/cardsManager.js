@@ -21,6 +21,7 @@ export let cardsManager = {
 
         }
     },
+
     renameCards: function(card) {
         const rename = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
         rename.addEventListener('dblclick', (event)=> {
@@ -33,6 +34,7 @@ export let cardsManager = {
             })
         })
     },
+
     addNewCard: async function (event) {
         const addCardBuilder = htmlFactory(htmlTemplates.addCard);
         const addCard = addCardBuilder();
