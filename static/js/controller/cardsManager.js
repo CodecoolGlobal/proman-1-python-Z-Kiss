@@ -30,6 +30,9 @@ export let cardsManager = {
                 rename.innerHTML = `<span>${event.currentTarget.value}`
             })
         })
+    },
+    renameCardColumns: function (card) {
+        const renameColumns = document.querySelector(`.card-title-`)
     }
 };
 
