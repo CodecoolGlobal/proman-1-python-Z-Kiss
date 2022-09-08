@@ -7,6 +7,7 @@ export let dataHandler = {
     },
     getStatuses: async function () {
         // the statuses are retrieved and then the callback function is called with the statuses
+        return await apiGet(`/api/statuses`)
     },
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
@@ -33,6 +34,20 @@ export let dataHandler = {
     createNewCard: async function (cardTitle, boardId, statusId) {
         // creates new card, saves it and calls the callback function with its data
     },
+    renameCard: async function (cardTitle, cardId) {
+       const payload = {
+            "cardId" : cardId,
+            "cardTitle" : cardTitle
+        }
+        return await apiPatch(`/api/cards`, payload)
+    },
+    renameBoard: async function (boardTitle, boardId) {
+        const payload = {
+            'boardTitle' : boardTitle,
+            'boardId' : boardId
+        }
+        return await apiPatch(`/api/boards`, payload)
+    }
 };
 
 async function apiGet(url) {
@@ -72,5 +87,15 @@ async function apiDelete(url) {
 async function apiPut(url) {
 }
 
-async function apiPatch(url) {
+async function apiPatch(url, payload) {
+    let response = await fetch(url,{
+      method: "PATCH",
+        body: JSON.stringify(payload),
+      headers: {
+      'Content-Type': 'application/json'
+    }});
+  if(response.status === 200){
+    let data = response.json();
+    console.log(data);
+  }
 }

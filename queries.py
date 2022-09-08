@@ -66,3 +66,20 @@ def add_new_board(title):
         RETURNING id,title;
         """
     , {"title":title}, False)
+
+def change_title(card_data):
+    return data_manager.execute_select("""
+    UPDATE cards
+    SET title = %(title)s
+    WHERE id = %(id)s
+    RETURNING id;""",
+            {'title': card_data['cardTitle'], 'id': card_data['cardId']})
+
+
+def change_title_board(board_data):
+    return data_manager.execute_select("""
+    UPDATE boards
+    SET title = %(title)s
+    WHERE id = %(id)s
+    RETURNING id, title;""",
+                                       {'title': board_data['boardTitle'], 'id': board_data['boardId']})

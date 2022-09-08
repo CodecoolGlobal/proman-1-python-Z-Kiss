@@ -76,7 +76,10 @@ body{
     align-items: center;
     align-content: center;
 }
-
+input {
+    background-color: dimgrey;
+    width: 100px
+}
 
 .delete-btn {
     display: flex;
