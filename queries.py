@@ -2,11 +2,7 @@ import data_manager
 
 
 def get_card_status(status_id):
-    """
-    Find the first status matching the given id
-    :param status_id:
-    :return: str
-    """
+
     status = data_manager.execute_select(
         """
         SELECT * FROM statuses s
@@ -19,24 +15,18 @@ def get_card_status(status_id):
 
 
 def get_boards():
-    """
-    Gather all boards
-    :return:
-    """
-    # remove this code once you implement the database
-    # return [{"title": "board1", "id": 1}, {"title": "board2", "id": 2}]
 
     return data_manager.execute_select(
         """
         SELECT * FROM boards
+        ORDER BY id
         ;
         """
     )
 
 
 def get_cards_for_board(board_id):
-    # remove this code once you implement the database
-    # return [{"title": "title1", "id": 1}, {"title": "board2", "id": 2}]
+
 
     matching_cards = data_manager.execute_select(
         """
@@ -70,6 +60,15 @@ def get_password(user_name):
            WHERE name = %(user_name)s""",
         {"user_name": user_name}, False )
 
+
+def delete_board_by_id(board_id):
+    query = '''
+        DELETE FROM boards WHERE id=%(id)s
+        RETURNING id;
+    '''
+    return data_manager.execute_select(query, {'id': board_id}, False)
+
+
 def add_new_board(title):
 
     return data_manager.execute_select(
@@ -79,6 +78,22 @@ def add_new_board(title):
         RETURNING id,title;
         """
     , {"title":title}, False)
+
+def create_new_card(title, order, board_id):
+
+    return data_manager.execute_select(
+        """
+        INSERT INTO cards (board_id, status_id, title, card_order)
+        VALUES (%(board_id)s, 1, %(title)s, %(order)s)
+        RETURNING id;
+        """
+        ,{"board_id": board_id, "title": title, "order": order}, False)
+
+def get_card_order(board_id):
+    return data_manager.execute_select("""
+    SELECT COUNT(status_id) FROM cards
+    WHERE board_id = %(board_id)s AND status_id = 1
+    """, {"board_id": board_id}, False)
 
 def change_title(card_data):
     return data_manager.execute_select("""

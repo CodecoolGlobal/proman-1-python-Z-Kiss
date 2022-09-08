@@ -128,12 +128,21 @@ body{
 }
 
 input {
-    background-color: dimgrey;
+    background-color: transparent;
+    border: none;
     width: 100px
 }
 
 .delete-btn {
     display: flex;
+    justify-items: end;
+    background-color: transparent;
+    border: none;
+}
+
+.delete-board-btn {
+    display: flex;
+    font-size: 20px;
     justify-items: end;
     background-color: transparent;
     border: none;

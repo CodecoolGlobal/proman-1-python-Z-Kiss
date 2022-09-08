@@ -9,10 +9,8 @@ export let cardsManager = {
         for (let card of cards) {
             const cardBuilder = htmlFactory(htmlTemplates.card);
             const content = cardBuilder(card);
-
             domManager.addChild(`.card-slot[data-board-id="${boardId}"][data-status="${card.status_id}"]`, content);
             addClassToCard(card)
-            let cardTitle = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
             domManager.addEventListener(
                 `.delete-btn[data-card-id="${card.id}"]`,
                 "click",
@@ -34,8 +32,17 @@ export let cardsManager = {
             })
         })
     },
-    renameCardColumns: function (card) {
-        const renameColumns = document.querySelector(`.card-title-`)
+    addNewCard: async function (event) {
+        const addCardBuilder = htmlFactory(htmlTemplates.addCard);
+        const addCard = addCardBuilder();
+        domManager.addChild(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"][data-status="${event.currentTarget.dataset.status}"]`, addCard)
+        domManager.addEventListener('input', 'change', async (event) => {
+            let inputCardTitle = event.currentTarget.value
+            let cardSlot = event.currentTarget.closest('.card-slot')
+            let promise = await dataHandler.createNewCard(inputCardTitle, cardSlot.dataset.boardId)
+            cardSlot.replaceChildren()
+            this.loadCards(cardSlot.dataset.boardId)
+        })
     }
 };
 

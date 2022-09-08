@@ -5,6 +5,11 @@ import {cardsManager} from "./cardsManager.js";
 
 export let boardsManager = {
     loadBoards: async function () {
+        domManager.addEventListener(
+                '#create-board',
+                'click',
+                this.addNewBoard
+            );
         const root = document.querySelector('#root')
         root.replaceChildren()
         const boards = await dataHandler.getBoards();
@@ -17,12 +22,19 @@ export let boardsManager = {
                 "click",
                 showHideButtonHandler
             );
-            domManager.addEventListener(
-                '#create-board',
-                'click',
-                this.addNewBoard
+            domManager.addEventListener(`.delete-board-btn[data-board-id="${board.id}"]`,
+                "click",
+                deleteButtonHandler
             );
+
+
             this.renameBoards(board)
+
+            domManager.addEventListener(
+                `.add-new-card[data-board-id = "${board.id}"]`,
+                'click',
+                (event) => cardsManager.addNewCard(event)
+            );
 
         }
     },
@@ -49,15 +61,15 @@ export let boardsManager = {
         const boardTitleBuilder = htmlFactory(htmlTemplates.boardTitle);
         const boardTitle = boardTitleBuilder();
         domManager.addChild('#root', boardTitle)
-        domManager.addEventListener('input','change', async (event) => {
+        domManager.addEventListener('input', 'change', async (event) => {
             let inputTitle = event.currentTarget.value
             await dataHandler.createNewBoard(inputTitle)
             const root = document.querySelector('#root')
             root.replaceChildren()
             boardsManager.loadBoards()
 
-        } )
-    },
+        })
+    }
 };
 
 function showHideButtonHandler(clickEvent) {
@@ -65,3 +77,15 @@ function showHideButtonHandler(clickEvent) {
     boardsManager.clearCardSlot(boardId)
     cardsManager.loadCards(boardId);
 }
+
+function deleteButtonHandler(clickEvent) {
+    const boardId = clickEvent.currentTarget.dataset.boardId
+    console.log(boardId)
+    dataHandler.deleteBoard(boardId).then( (id) => {
+        const board = document.querySelector(`.board-container[data-board-id="${boardId}"]`)
+        console.log(board)
+        console.log(document.querySelector('#root'))
+        document.querySelector('#root').removeChild(board)
+    })
+}
+

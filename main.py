@@ -1,4 +1,3 @@
-import psycopg2.errors
 from flask import Flask, render_template, url_for, session, redirect, request, jsonify
 from dotenv import load_dotenv
 from util import json_response
@@ -41,14 +40,23 @@ def login():
 
 
 @app.route("/api/boards/create", methods=['POST'])
+@json_response
+def create_board():
+    return queries.add_new_board(request.json["title"])
+
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    if request.method == 'POST':
-        title = request.get_json()
-        return queries.add_new_board(request.json["title"])
-    if request.method == 'GET':
-        return queries.get_boards()
+    return queries.get_boards()
+
+
+@app.route("/api/cards/create", methods=['POST'])
+@json_response
+def add_cards():
+    card_data = request.get_json()
+    order = queries.get_card_order(card_data['boardId'])
+    card_id = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["boardId"])
+    return {"id": card_id['id']}
 
 
 @app.route("/api/boards/<int:board_id>/cards/")
@@ -79,6 +87,12 @@ def change_title():
 def change_title_for_board():
     board_data = request.get_json()
     return queries.change_title_board(board_data)
+
+
+@app.route("/api/boards/<int:board_id>", methods=['DELETE'])
+@json_response
+def delete_board_by_id(board_id: int):
+    return queries.delete_board_by_id(board_id)
 
 
 def main():
