@@ -5,6 +5,11 @@ import {cardsManager} from "./cardsManager.js";
 
 export let boardsManager = {
     loadBoards: async function () {
+        domManager.addEventListener(
+                '#create-board',
+                'click',
+                this.addNewBoard
+            );
         const root = document.querySelector('#root')
         root.replaceChildren()
         const boards = await dataHandler.getBoards();
@@ -22,11 +27,7 @@ export let boardsManager = {
                 deleteButtonHandler
             );
 
-            domManager.addEventListener(
-                '#create-board',
-                'click',
-                this.addNewBoard
-            );
+
             this.renameBoards(board)
 
         }
