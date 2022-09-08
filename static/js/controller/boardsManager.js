@@ -37,7 +37,7 @@ export let boardsManager = {
                 rename.innerHTML = `<span>${change.currentTarget.value}`
             })
         })
-    }
+    },
     addNewBoard: function () {
         const boardTitleBuilder = htmlFactory(htmlTemplates.boardTitle);
         const boardTitle = boardTitleBuilder();
