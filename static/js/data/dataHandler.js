@@ -30,6 +30,13 @@ export let dataHandler = {
             "cardTitle" : cardTitle
         }
         return await apiPatch(`/api/cards`, payload)
+    },
+    renameBoard: async function (boardTitle, boardId) {
+        const payload = {
+            'boardTitle' : boardTitle,
+            'boardId' : boardId
+        }
+        return await apiPatch(`/api/boards`, payload)
     }
 };
 
