@@ -2,11 +2,7 @@ import data_manager
 
 
 def get_card_status(status_id):
-    """
-    Find the first status matching the given id
-    :param status_id:
-    :return: str
-    """
+
     status = data_manager.execute_select(
         """
         SELECT * FROM statuses s
@@ -19,12 +15,6 @@ def get_card_status(status_id):
 
 
 def get_boards():
-    """
-    Gather all boards
-    :return:
-    """
-    # remove this code once you implement the database
-    # return [{"title": "board1", "id": 1}, {"title": "board2", "id": 2}]
 
     return data_manager.execute_select(
         """
@@ -36,8 +26,7 @@ def get_boards():
 
 
 def get_cards_for_board(board_id):
-    # remove this code once you implement the database
-    # return [{"title": "title1", "id": 1}, {"title": "board2", "id": 2}]
+
 
     matching_cards = data_manager.execute_select(
         """
@@ -70,6 +59,15 @@ def get_password(user_name):
         """SELECT password FROM user_data
            WHERE name = %(user_name)s""",
         {"user_name": user_name}, False )
+
+
+def delete_board_by_id(board_id):
+    query = '''
+        DELETE FROM boards WHERE id=%(id)s
+        RETURNING id;
+    '''
+    return data_manager.execute_select(query, {'id': board_id}, False)
+
 
 def add_new_board(title):
 

@@ -30,6 +30,10 @@ export let dataHandler = {
         await apiPost('/api/boards/create', boardTitle)
 
     },
+    deleteBoard: async function (boardId) {
+         const response = apiDelete(`/api/boards/${boardId}`);
+         return response
+    },
     createNewCard: async function (title, boardId) {
         let cardData = {
             "title": title,

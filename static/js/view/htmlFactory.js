@@ -29,25 +29,32 @@ export function htmlFactory(template) {
 }
 
 function boardBuilder(board) {
-    return ` <div class="board-container">
+    return ` <div class="board-container" data-board-id=${board.id}>
                 <div class="board-header">
                     <div class="board-title" data-board-id=${board.id}><span>${board.title}</span></div>
+                    <button class="delete-board-btn" data-board-id="${board.id}">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
                     <button class="add-new-card" data-board-id=${board.id} data-status="1">Add new card</button>
                     <button class="toggle-board-button" data-board-id=${board.id}>Show Cards</button>
                 </div>
+                
                 <div  class="board-body" >
                    <div class="card-container">
                        <div class="card-title new">New</div>
                        <div class="card-slot" data-board-id="${board.id}" data-status="1"></div>
                    </div>
+                   
                    <div class="card-container">
                        <div class="card-title  in-progress" >In progress</div>
                        <div class="card-slot" data-board-id="${board.id}" data-status="2"></div>
                    </div>
+                   
                    <div class="card-container">
                        <div class="card-title  testing">Testing</div>
                        <div class="card-slot" data-board-id="${board.id}" data-status="3"></div>
                    </div>
+                   
                    <div class="card-container">
                        <div class="card-title  done">Done</div>
                        <div class="card-slot" data-board-id="${board.id}" data-status="4"></div>
@@ -129,4 +136,6 @@ function registerBuilder(){
     </div>
     `
 }
+
+
 
