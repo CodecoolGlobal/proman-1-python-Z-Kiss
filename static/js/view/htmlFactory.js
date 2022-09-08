@@ -62,7 +62,6 @@ function cardBuilder(card) {
                 </button>
             </div>`;
 
-    return `<div class="card" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span></div>`;
 
 }
 
