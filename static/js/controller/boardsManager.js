@@ -30,7 +30,7 @@ export let boardsManager = {
         for (const slot of cardSlots) {
             slot.replaceChildren()
         }
-    }
+    },
     addNewBoard: function () {
         const boardTitleBuilder = htmlFactory(htmlTemplates.boardTitle);
         const boardTitle = boardTitleBuilder();
@@ -48,5 +48,6 @@ export let boardsManager = {
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
+    boardsManager.clearCardSlot(boardId)
     cardsManager.loadCards(boardId);
 }

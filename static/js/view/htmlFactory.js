@@ -10,7 +10,7 @@ export const builderFunctions = {
     [htmlTemplates.board]: boardBuilder,
     [htmlTemplates.card]: cardBuilder,
     [htmlTemplates.reg]: registerBuilder,
-    [htmlTemplates.log]: loginBuilder
+    [htmlTemplates.log]: loginBuilder,
     [htmlTemplates.boardTitle]: addNewBoard
 };
 

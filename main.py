@@ -39,6 +39,8 @@ def login():
         session['user'] = user_data
     return user_data
 
+
+@app.route("/api/boards/create", methods=['POST'])
 @app.route("/api/boards")
 @json_response
 def get_boards():
