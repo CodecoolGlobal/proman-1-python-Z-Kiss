@@ -63,3 +63,14 @@ def delete_board_by_id(board_id):
         RETURNING id;
     '''
     return data_manager.execute_select(query, {'id': board_id}, False)
+
+
+def add_new_board(title):
+
+    return data_manager.execute_select(
+        """
+        INSERT INTO  boards (title)
+        VALUES (%(title)s)
+        RETURNING id,title;
+        """
+    , {"title":title}, False)
