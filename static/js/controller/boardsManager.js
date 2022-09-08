@@ -74,7 +74,6 @@ export let boardsManager = {
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
-    boardsManager.clearCardSlot(boardId)
     cardsManager.loadCards(boardId);
 }
 
