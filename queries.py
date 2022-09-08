@@ -81,6 +81,16 @@ def add_new_board(title):
         """
     , {"title":title}, False)
 
+def create_new_card(title, order, board_id):
+
+    return data_manager.execute_select(
+        """
+        INSERT INTO cards (board_id, status_id, title, card_order)
+        VALUES (%(board_id)s, 1, %(title)s, %(order)s)
+        RETURNING id;
+        """
+        ,{"board_id": board_id, "title": title, "order": order}, False)
+
 def change_title(card_data):
     return data_manager.execute_select("""
     UPDATE cards

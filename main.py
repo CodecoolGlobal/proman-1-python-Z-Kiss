@@ -45,10 +45,15 @@ def login():
 @json_response
 def get_boards():
     if request.method == 'POST':
-        title = request.get_json()
         return queries.add_new_board(request.json["title"])
     if request.method == 'GET':
         return queries.get_boards()
+
+
+@app.route("/api/cards/create", methods=['POST'])
+@json_response
+def add_cards():
+    return queries.create_new_card(request.json["title"],request.json["order"], request.json["boardId"])
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

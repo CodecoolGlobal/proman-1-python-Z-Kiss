@@ -67,11 +67,12 @@ export let boardsManager = {
     addNewCard: function (event) {
         const addCardBuilder = htmlFactory(htmlTemplates.addCard);
         const addCard = addCardBuilder();
-        domManager.addChild(`.card-slot[data-board.id='${event.currentTarget.dataset.boardId}'][data-status="${event.currentTarget.dataset.status}"]`, addCard)
+        domManager.addChild(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"][data-status="${event.currentTarget.dataset.status}"]`, addCard)
         domManager.addEventListener('input', 'change', async (event) => {
             let inputCardTitle = event.currentTarget.value
-            console.log(inputCardTitle)
-
+            let cards = document.querySelector(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"][data-status="${event.currentTarget.dataset.status}"]`)
+            let promise = await dataHandler.createNewCard(inputCardTitle, cards.children.length, cards.dataset.boardId)
+            console.log(promise)
         })
     }
 };
