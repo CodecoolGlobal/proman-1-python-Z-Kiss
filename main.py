@@ -66,8 +66,7 @@ def change_title_for_board():
 
 
 def main():
-    app.run(debug=True,
-            port=8000)
+    app.run(debug=True)
 
     # Serving the favicon
     with app.app_context():
