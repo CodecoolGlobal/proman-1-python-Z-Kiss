@@ -55,7 +55,7 @@ def delete_card_by_id(card_id: int):
 @app.route("/api/boards/<int:board_id>", methods=['DELETE'])
 @json_response
 def delete_board_by_id(board_id: int):
-    return queries.delete_card_by_id(board_id)
+    return queries.delete_board_by_id(board_id)
 
 
 def main():
