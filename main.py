@@ -53,7 +53,10 @@ def get_boards():
 @app.route("/api/cards/create", methods=['POST'])
 @json_response
 def add_cards():
-    return queries.create_new_card(request.json["title"],request.json["order"], request.json["boardId"])
+    card_data = request.get_json()
+    order = queries.get_card_order(card_data['boardId'])
+    card_id = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["boardId"])
+    return {"id": card_id['id']}
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

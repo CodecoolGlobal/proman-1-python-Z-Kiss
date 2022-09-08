@@ -27,7 +27,7 @@ export let boardsManager = {
             domManager.addEventListener(
                 `.add-new-card[data-board-id = "${board.id}"]`,
                 'click',
-                (event) => this.addNewCard(event)
+                (event) => cardsManager.addNewCard(event)
             );
 
         }
@@ -62,17 +62,6 @@ export let boardsManager = {
             root.replaceChildren()
             boardsManager.loadBoards()
 
-        })
-    },
-    addNewCard: function (event) {
-        const addCardBuilder = htmlFactory(htmlTemplates.addCard);
-        const addCard = addCardBuilder();
-        domManager.addChild(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"][data-status="${event.currentTarget.dataset.status}"]`, addCard)
-        domManager.addEventListener('input', 'change', async (event) => {
-            let inputCardTitle = event.currentTarget.value
-            let cards = document.querySelector(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"][data-status="${event.currentTarget.dataset.status}"]`)
-            let promise = await dataHandler.createNewCard(inputCardTitle, cards.children.length, cards.dataset.boardId)
-            console.log(promise)
         })
     }
 };

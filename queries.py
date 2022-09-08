@@ -91,6 +91,12 @@ def create_new_card(title, order, board_id):
         """
         ,{"board_id": board_id, "title": title, "order": order}, False)
 
+def get_card_order(board_id):
+    return data_manager.execute_select("""
+    SELECT COUNT(status_id) FROM cards
+    WHERE board_id = %(board_id)s AND status_id = 1
+    """, {"board_id": board_id}, False)
+
 def change_title(card_data):
     return data_manager.execute_select("""
     UPDATE cards
