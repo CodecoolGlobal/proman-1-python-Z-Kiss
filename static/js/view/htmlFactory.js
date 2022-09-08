@@ -2,7 +2,8 @@ export const htmlTemplates = {
     board: 1,
     card: 2,
     reg: 3,
-    log: 4
+    log: 4,
+    boardTitle: 5
 }
 
 export const builderFunctions = {
@@ -10,6 +11,7 @@ export const builderFunctions = {
     [htmlTemplates.card]: cardBuilder,
     [htmlTemplates.reg]: registerBuilder,
     [htmlTemplates.log]: loginBuilder
+    [htmlTemplates.boardTitle]: addNewBoard
 };
 
 export function htmlFactory(template) {
@@ -65,7 +67,14 @@ function cardBuilder(card) {
             </div>`;
 
 
+}
 
+function addNewBoard() {
+    return `<div class="board-container">
+                <div class="board-header">
+                    <div class="board-title"><input type="text" id="add-board-input" name="add-board-input"></div>
+                    <button class="toggle-board-button">Show Cards</button>
+                </div></div>`
 }
 
 function loginBuilder(){

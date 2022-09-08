@@ -42,10 +42,11 @@ def login():
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    """
-    All the boards
-    """
-    return queries.get_boards()
+    if request.method == 'POST':
+        title = request.get_json()
+        return queries.add_new_board(request.json["title"])
+    if request.method == 'GET':
+        return queries.get_boards()
 
 
 @app.route("/api/boards/<int:board_id>/cards/")

@@ -1,8 +1,6 @@
 export let dataHandler = {
     getBoards: async function () {
-        const response = apiGet("/api/boards");
-        return response
-
+        return await apiGet("/api/boards");
     },
     getBoard: async function (boardId) {
         // the board is retrieved and then the callback function is called with the board
@@ -13,21 +11,24 @@ export let dataHandler = {
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
     },
-    getCardsByBoardId: async function (boardId) {
-        return await apiGet(`/api/boards/${boardId}/cards/`);
-
+   getCardsByBoardId: async function (boardId) {
+        const response = await apiGet(`/api/boards/${boardId}/cards/`);
+        return response
     },
     deleteCard: async function (cardId) {
          const response = apiDelete(`/api/cards/${cardId}`);
          return response
+        return await apiGet(`/api/boards/${boardId}/cards/`);
     },
+    getCard: async function (cardId) {
         // the card is retrieved and then the callback function is called with the card
-    // getCard: async function (cardId) {
-    //     const response = await api__(`/api/cards/${cardId}`)
-    //     // the card is retrieved and then the callback function is called with the card
-    // },
-    createNewBoard: async function (boardTitle) {
+    },
+    createNewBoard: async function (title) {
         // creates new board, saves it and calls the callback function with its data
+        let boardTitle = {}
+        boardTitle.title = title
+        await apiPost('/api/boards/create', boardTitle)
+
     },
     createNewCard: async function (cardTitle, boardId, statusId) {
         // creates new card, saves it and calls the callback function with its data
@@ -61,14 +62,18 @@ async function apiGet(url) {
 }
 
 async function apiPost(url, payload) {
-    let response = await fetch(url, {
+    await fetch(url, {
         method: "POST",
+        body: JSON.stringify(payload),
         headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+            'Content-Type': 'application/json'
+        }
     })
-
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+            return data
+        })
 }
 
 async function apiDelete(url) {

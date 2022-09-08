@@ -69,3 +69,13 @@ def get_password(user_name):
         """SELECT password FROM user_data
            WHERE name = %(user_name)s""",
         {"user_name": user_name}, False )
+
+def add_new_board(title):
+
+    return data_manager.execute_select(
+        """
+        INSERT INTO  boards (title)
+        VALUES (%(title)s)
+        RETURNING id,title;
+        """
+    , {"title":title}, False)
