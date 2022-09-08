@@ -55,3 +55,14 @@ def delete_card_by_id(card_id):
         RETURNING id;
     '''
     return data_manager.execute_select(query, {'card_id': card_id}, False)
+
+
+def add_new_board(title):
+
+    return data_manager.execute_select(
+        """
+        INSERT INTO  boards (title)
+        VALUES (%(title)s)
+        RETURNING id,title;
+        """
+    , {"title":title}, False)
