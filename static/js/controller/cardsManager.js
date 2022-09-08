@@ -12,13 +12,31 @@ export let cardsManager = {
 
             domManager.addChild(`.card-slot[data-board-id="${boardId}"][data-status="${card.status_id}"]`, content);
             addClassToCard(card)
+            let cardTitle = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
             domManager.addEventListener(
                 `.delete-btn[data-card-id="${card.id}"]`,
                 "click",
                 deleteButtonHandler
             );
+            this.renameCards(card)
+
         }
     },
+    renameCards: function(card) {
+        const rename = document.querySelector(`.card[data-card-id="${card.id}"] > span`)
+        rename.addEventListener('dblclick', (event)=> {
+            event.target.innerHTML = `<input id="input-field" type="text">`
+            const input_field = document.querySelector('input')
+            input_field.addEventListener('change', async (event) => {
+                let currentCard = document.querySelector(`.card[data-card-id="${card.id}"]`)
+                dataHandler.renameCard(event.currentTarget.value, currentCard.dataset.cardId)
+                rename.innerHTML = `<span>${event.currentTarget.value}`
+            })
+        })
+    },
+    renameCardColumns: function (card) {
+        const renameColumns = document.querySelector(`.card-title-`)
+    }
 };
 
 function deleteButtonHandler(clickEvent) {

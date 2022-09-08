@@ -27,8 +27,28 @@ export let boardsManager = {
                 'click',
                 this.addNewBoard
             );
+            this.renameBoards(board)
 
         }
+    },
+    clearCardSlot: async function (boardId) {
+        let cardSlots = document.querySelectorAll(`.card-slot[data-board-id="${boardId}"]`)
+        for (const slot of cardSlots) {
+            slot.replaceChildren()
+
+        }
+    },
+    renameBoards: function (board) {
+        const rename = document.querySelector(`.board-title[data-board-id="${board.id}"] > span`)
+        rename.addEventListener('dblclick', (event) => {
+            event.target.innerHTML = `<input id="input-field" type="text">`
+            const input_field = document.querySelector('input')
+            input_field.addEventListener('change', (change) => {
+                let currentBoard = document.querySelector(`.board-title[data-board-id="${board.id}"]`)
+                dataHandler.renameBoard(change.currentTarget.value, currentBoard.dataset.boardId)
+                rename.innerHTML = `<span>${change.currentTarget.value}`
+            })
+        })
     },
     addNewBoard: function () {
         const boardTitleBuilder = htmlFactory(htmlTemplates.boardTitle);
@@ -47,6 +67,7 @@ export let boardsManager = {
 
 function showHideButtonHandler(clickEvent) {
     const boardId = clickEvent.target.dataset.boardId;
+    boardsManager.clearCardSlot(boardId)
     cardsManager.loadCards(boardId);
 }
 
