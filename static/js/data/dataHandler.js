@@ -11,7 +11,13 @@ export let dataHandler = {
     getStatus: async function (statusId) {
         // the status is retrieved and then the callback function is called with the status
     },
-    getCardsByBoardId: async function (boardId) {
+   getCardsByBoardId: async function (boardId) {
+        const response = await apiGet(`/api/boards/${boardId}/cards/`);
+        return response
+    },
+    deleteCard: async function (cardId) {
+         const response = apiDelete(`/api/cards/${cardId}`);
+         return response
         return await apiGet(`/api/boards/${boardId}/cards/`);
     },
     getCard: async function (cardId) {
@@ -54,6 +60,13 @@ async function apiPost(url, payload) {
 }
 
 async function apiDelete(url) {
+    let response = await fetch (url, {
+        method: "DELETE",
+    });
+    if (response.status === 200) {
+    let data = response.json();
+    return data;
+    }
 }
 
 async function apiPut(url) {

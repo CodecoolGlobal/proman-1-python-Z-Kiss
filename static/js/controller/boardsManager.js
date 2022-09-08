@@ -23,6 +23,7 @@ export let boardsManager = {
                 'click',
                 this.addNewBoard
             );
+
         }
     },
     addNewBoard: function () {
