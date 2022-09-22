@@ -51,7 +51,7 @@ function boardBuilder(board) {
 }
 function buildCardContainer(column){
     return `<div class="card-container">
-               <div class="card-title" style="background: ${column.color}" data-column-id="${column.id}">${column.title}</div>
+               <div class="card-title" style="background: ${column.color}" data-column-id="${column.id}"><span>${column.title}</span></div>
                <div class="card-slot" data-board-id="${column.board_id}" data-status="${column.status_id}"></div>
            </div>`;
 }

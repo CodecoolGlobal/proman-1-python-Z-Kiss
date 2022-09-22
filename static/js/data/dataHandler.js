@@ -61,6 +61,14 @@ export let dataHandler = {
     getColumns: async function (boardId){
         return  await apiGet(`/api/columns/${boardId}`)
     },
+    renameColumns : async function (columnTitle, columnId) {
+        const payload = {
+            'columnTitle' : columnTitle,
+            'columnId' : columnId
+
+        }
+        return await apiPatch(`/api/columns`, payload)
+    },
     registerNewContainer: async function(boardId, title, color){
         let payload = {
             "board_id": boardId,

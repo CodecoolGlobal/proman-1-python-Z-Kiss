@@ -112,13 +112,24 @@ def get_card_order(board_id):
     WHERE board_id = %(board_id)s AND status_id = 1
     """, {"board_id": board_id}, False)
 
+
 def change_title(card_data):
     return data_manager.execute_select("""
     UPDATE cards
     SET title = %(title)s
-    WHERE id = %(id)s
+    WHERE id = %(id)s 
     RETURNING id;""",
             {'title': card_data['cardTitle'], 'id': card_data['cardId']})
+
+
+def change_column_title(column_data):
+    return data_manager.execute_select("""
+    UPDATE statuses
+    SET title = %(title)s
+    WHERE id = %(id)s
+    """,
+                                       {'title': column_data['columnTitle'], 'id': column_data['columnId']})
+
 
 def change_title_board(board_data):
     return data_manager.execute_select("""

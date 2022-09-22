@@ -12,7 +12,10 @@ export let boardsManager = {
         await createMultipleContainers(boards)
         boards.forEach((board) => {
             cardsManager.loadCards(board.id)
+
         })
+        this.renameColumns()
+
     },
     renameBoards: function (board) {
         const rename = document.querySelector(`.board-title[data-board-id="${board.id}"] > span`)
@@ -28,6 +31,25 @@ export let boardsManager = {
                 })
             }
         })
+    },
+    renameColumns: function () {
+        const renameFields = document.querySelectorAll(`.card-title > span`)
+        renameFields.forEach((rename) => {
+            rename.addEventListener('dblclick', (event) => {
+            let inputField = document.querySelector('input')
+            if (inputField === null) {
+                event.target.innerHTML = `<input id="input-field" type="text" required><button data-column-id="${column.id}" id="button-save">Save</button>`
+                const saveButton = document.querySelector(`#button-save`)
+                saveButton.addEventListener('click',  (event,rename) => {
+                    console.log(rename)
+                    let inputField = document.querySelector('input')
+                    dataHandler.renameColumns(inputField.value, rename.parent.dataset.columnId)
+                    rename.innerHTML = `<span>${inputField.value}</span>`
+                })
+            }
+        })
+        })
+
     },
     addNewBoard: function () {
         const boardTitleBuilder = htmlFactory(htmlTemplates.boardTitle);
@@ -118,6 +140,7 @@ async function createContainers(boardId){
     return container
 }
 
+
 function createNewContainer(boardId){
     const inputContainerBuilder = htmlFactory(htmlTemplates.addNewContainer)
     let inputContainer = inputContainerBuilder(boardId)
@@ -133,3 +156,4 @@ function createNewContainer(boardId){
 
     })
 }
+

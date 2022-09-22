@@ -97,6 +97,14 @@ def change_title_for_board():
     return queries.change_title_board(board_data)
 
 
+@app.route('/api/columns', methods=['PATCH'])
+@json_response
+def change_title_for_columns():
+    column_data = request.get_json()
+    return queries.change_column_title(column_data)
+
+
+
 @app.route("/api/boards/<int:board_id>", methods=['DELETE'])
 @json_response
 def delete_board_by_id(board_id: int):
@@ -122,7 +130,8 @@ def add_new_column():
 
 
 def main():
-    app.run(debug=True)
+    app.run(debug=True,
+            port=5007)
 
     # Serving the favicon
     with app.app_context():
