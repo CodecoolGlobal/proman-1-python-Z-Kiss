@@ -75,6 +75,10 @@ export let dataHandler = {
             "card_status_id": cardStatusId
         }
         await apiPatch('/api/card/change-status', payload)
+    },
+    deleteColumn: async function (columnId) {
+        const response = apiDelete(`/api/columns/${columnId}`);
+        return response
     }
 };
 

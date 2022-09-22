@@ -77,6 +77,12 @@ def get_cards_for_board(board_id: int):
     return queries.get_cards_for_board(board_id)
 
 
+@app.route("/api/columns/<int:column_id>", methods=['DELETE'])
+@json_response
+def delete_column_by_id(column_id: int):
+    return queries.delete_column_by_id(column_id)
+
+
 @app.route("/api/cards/<int:card_id>", methods=['DELETE'])
 @json_response
 def delete_card_by_id(card_id: int):

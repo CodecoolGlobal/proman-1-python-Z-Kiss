@@ -10,6 +10,7 @@ export let boardsManager = {
         const boards= await dataHandler.getBoards();
         createMultipleBoard(boards)
         await createMultipleContainers(boards)
+        deleteColumnHandler ()
         boards.forEach((board) => {
             cardsManager.loadCards(board.id)
         })
@@ -160,3 +161,15 @@ function initDropZone(boardId){
     })
 
 }
+
+function deleteColumnHandler () {
+    const deleteButtons = document.querySelectorAll('.delete-column-btn')
+    deleteButtons.forEach((deleteButton) => {
+        deleteButton.addEventListener('click', (event) => {
+            document.querySelector(`.card-container[data-column-id="${event.currentTarget.dataset.columnId}"]`).remove()
+            const columnId= event.currentTarget.dataset.columnId
+            dataHandler.deleteColumn(columnId)
+        })
+    })
+}
+

@@ -50,8 +50,13 @@ function boardBuilder(board) {
             </div>`;
 }
 function buildCardContainer(column){
-    return `<div class="card-container" data-board-id="${column.board_id}">
-               <div class="card-title" style="background: ${column.color}" data-column-id="${column.id}">${column.title}</div>
+    return `<div class="card-container" data-board-id="${column.board_id}" data-column-id="${column.id}">
+               <div class="card-title" style="background: ${column.color}" data-column-id="${column.id}">
+                    ${column.title}
+                    <button class="delete-column-btn" data-column-id="${column.id}">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+               </div>
                <div class="card-slot" data-color="${column.color}" data-board-id="${column.board_id}" data-status="${column.status_id}"></div>
            </div>`;
 }

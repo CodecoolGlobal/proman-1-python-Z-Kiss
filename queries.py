@@ -69,6 +69,15 @@ def get_order_for_column(board_id):
     WHERE board_id = %(id_of_board)s
     """,{"id_of_board": board_id}, False)
 
+
+def delete_column_by_id(column_id):
+    query = '''
+        DELETE FROM columns WHERE id=%(column_id)s
+        RETURNING id;
+    '''
+    return data_manager.execute_select(query, {'column_id': column_id}, False)
+
+
 def add_new_status(title, color):
     return data_manager.execute_select("""
     INSERT INTO statuses (title, color)
@@ -82,6 +91,7 @@ def add_new_column(board_id, status_id, order):
     VALUES (%(id_of_board)s, %(id_of_status)s, %(order_of_column)s)
     RETURNING id
     """,{"id_of_board": board_id, "id_of_status": status_id, "order_of_column": order}, False)
+
 def add_default_columns(board_id):
     return data_manager.execute_select("""
     WITH new_column AS (
