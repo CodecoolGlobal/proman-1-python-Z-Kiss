@@ -89,7 +89,7 @@ def add_new_column(board_id, status_id, order):
     return data_manager.execute_select("""
     INSERT INTO columns (board_id, status_id, column_order)
     VALUES (%(id_of_board)s, %(id_of_status)s, %(order_of_column)s)
-    RETURNING id
+    RETURNING id, board_id
     """,{"id_of_board": board_id, "id_of_status": status_id, "order_of_column": order}, False)
 
 def add_default_columns(board_id):
@@ -106,15 +106,15 @@ def add_default_columns(board_id):
     ORDER BY column_order;
     """, {"id_of_board": board_id})
 
-def create_new_card(title, order, board_id):
+def create_new_card(title, order, board_id, status_id):
 
     return data_manager.execute_select(
         """
         INSERT INTO cards (board_id, status_id, title, card_order)
-        VALUES (%(board_id)s, 1, %(title)s, %(order)s)
-        RETURNING id, board_id;
+        VALUES (%(board_id)s, %(id_of_status)s, %(title)s, %(order)s)
+        RETURNING id, status_id, board_id, card_order;
         """
-        ,{"board_id": board_id, "title": title, "order": order}, False)
+        ,{"board_id": board_id,"id_of_status":status_id, "title": title, "order": order}, False)
 
 def get_card_order(board_id):
     return data_manager.execute_select("""

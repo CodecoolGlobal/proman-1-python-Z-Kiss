@@ -57,8 +57,10 @@ def get_boards():
 @json_response
 def add_cards():
     card_data = request.get_json()
-    order = queries.get_card_order(card_data['boardId'])
-    card_data = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["boardId"])
+    print(card_data)
+    order = queries.get_card_order(card_data['board_id'])
+    status_id = card_data['status_id']
+    card_data = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["board_id"], status_id)
     return card_data
 
 @app.route('/api/columns/<int:board_id>')
@@ -120,6 +122,7 @@ def add_new_column():
     column_id = queries.add_new_column(board_id, status_id["id"], order["order"])
     column = {
         "id": column_id["id"],
+        "board_id":column_id['board_id'],
         "status_id": status_id["id"],
         "title": title,
         "color": color

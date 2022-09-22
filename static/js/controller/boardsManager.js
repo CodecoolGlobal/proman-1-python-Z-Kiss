@@ -64,7 +64,6 @@ async function createNewBoard(board) {
     domManager.addChild("#root", newBoard)
     initBoardEvents(board)
     let container = await createContainers(board.id)
-    console.log(container)
     domManager.addChild(`.board-body[data-board-id="${board.id}"`, container)
 
 }
@@ -131,7 +130,7 @@ function createNewContainer(boardId){
         const containerBuilder = htmlFactory(htmlTemplates.cardContainer)
         document.querySelector(`#card-container-input`).remove()
         domManager.addChild(`.board-body[data-board-id="${boardId}"]`, containerBuilder(containerData))
-
+        initDropZone(boardId)
     })
 }
 
@@ -141,13 +140,9 @@ function initDropZone(boardId){
         zone.addEventListener('dragover',(event)=>{
             event.preventDefault()
         })
-    })
-    dropZones.forEach((zone) => {
         zone.addEventListener('dragenter',(event)=>{
             event.preventDefault()
         })
-    })
-    dropZones.forEach((zone) =>{
         zone.addEventListener('drop',(event)=>{
 
             let card = document.querySelector(`.dragging`)
@@ -156,7 +151,6 @@ function initDropZone(boardId){
                 event.target.appendChild(document.querySelector(`.dragging`))
                 dataHandler.updateCardStatus(card.dataset.cardId, event.target.dataset.status)
             }
-
         })
     })
 

@@ -21,10 +21,11 @@ export let dataHandler = {
         const response = apiDelete(`/api/boards/${boardId}`);
         return response
     },
-    createNewCard: async function (title, boardId) {
+    createNewCard: async function (title, boardId, statusId) {
         let cardData = {
             "title": title,
-            "boardId": boardId
+            "board_id": boardId,
+            "status_id": statusId
         }
         return await apiPost('/api/cards/create', cardData)
     },

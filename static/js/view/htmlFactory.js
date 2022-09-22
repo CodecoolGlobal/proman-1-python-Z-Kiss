@@ -40,7 +40,7 @@ function boardBuilder(board) {
                         <button class="delete-board-btn" data-board-id="${board.id}">
                             <i class="fa fa-trash-o"></i>
                         </button>
-                        <button class="add-new-card" data-board-id=${board.id} data-status="1">Add new card</button>
+                        <button class="add-new-card" data-board-id=${board.id}>Add new card</button>
                         <button class="add-new-column" data-board-id=${board.id}>Add new Column</button>
                         <button class="toggle-board-button" data-board-id=${board.id}>Show Cards</button>
                     </div>
@@ -68,11 +68,11 @@ function cardBuilder(card) {
                 </button>
             </div>`;
 }
-function addNewCard() {
+function addNewCard(boardId) {
     return `
             <div class="card new-card">
                 <span>
-                <input type="text" id="add-card-input" name="add-card-input" required><button id="new-card-save-btn">Save</button>
+                <input type="text" id="add-card-input" name="add-card-input" required><button id="new-card-save-btn" data-board-id="${boardId}">Save</button>
                 </span>
             </div>`;
 }
@@ -134,10 +134,10 @@ function addNewContainer(boardId){
                <div class="card-title-container" style="margin-top: 5px" >
                     Title:<input id="column-title" type="text"><br>
                     Color: <input id="column-color" type="color">
-                    
-                <div class="card-slot" style="border: none;margin-top: 5px" >
-                    <button id="save-column" data-board-id="${boardId}" style="margin-top: 5px">Save</button></div>
-                </div>
+                     <button id="save-column" data-board-id="${boardId}" style="margin-top: 5px">Save</button></div>
+<!--                <div class="card-slot" style="border: none;margin-top: 5px" >-->
+                   
+<!--                </div>-->
            </div>`;
 }
 
