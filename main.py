@@ -10,6 +10,7 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = 'fafsa'
 
+
 @app.route("/")
 def index():
     """
@@ -19,7 +20,8 @@ def index():
     session['user'] = 'Guest'
     return render_template('index.html')
 
-@app.route("/register", methods=['POST'] )
+
+@app.route("/register", methods=['POST'])
 def register():
     user_data = request.get_json()
     user_data['psw'] = util.hash_password(user_data['psw'])
@@ -28,6 +30,7 @@ def register():
     # except psycopg2.errors.UniqueViolation:
     #     return jsonify("id": psycopg2.errors.UniqueViolation)
     return jsonify(queries.register_user(user_data))
+
 
 @app.route("/login")
 @json_response
@@ -43,8 +46,9 @@ def login():
 @json_response
 def create_board():
     board = queries.add_new_board(request.json["title"])
-    queries.add_default_columns(board['id'])
+
     return board
+
 
 @app.route("/api/boards")
 @json_response
@@ -62,6 +66,7 @@ def add_cards():
     status_id = card_data['status_id']
     card_data = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["board_id"], status_id)
     return card_data
+
 
 @app.route('/api/columns/<int:board_id>')
 @json_response
@@ -82,6 +87,7 @@ def get_cards_for_board(board_id: int):
 @app.route("/api/columns/<int:column_id>", methods=['DELETE'])
 @json_response
 def delete_column_by_id(column_id: int):
+    queries.delete_cards_by_column_id(column_id)
     return queries.delete_column_by_id(column_id)
 
 
@@ -109,10 +115,8 @@ def change_title_for_board():
 @json_response
 def change_title_for_columns():
     column_data = request.get_json()
-    id = queries.change_column_title(column_data)
-    print(id)
-    return queries.change_column_title(column_data)
-
+    status_id = queries.get_status_for_column(column_data["column_id"])
+    return queries.change_status_title(status_id['status_id'], column_data['column_title'])
 
 
 @app.route("/api/boards/<int:board_id>", methods=['DELETE'])
@@ -132,12 +136,13 @@ def add_new_column():
     column_id = queries.add_new_column(board_id, status_id["id"], order["order"])
     column = {
         "id": column_id["id"],
-        "board_id":column_id['board_id'],
+        "board_id": column_id['board_id'],
         "status_id": status_id["id"],
         "title": title,
         "color": color
     }
     return column
+
 
 @app.route('/api/card/change-status', methods=['PATCH'])
 @json_response
@@ -146,6 +151,8 @@ def change_card_status():
     card_status_id = request.json['card_status_id']
     print(card_id, card_status_id)
     return queries.change_card_status(card_id, card_status_id)
+
+
 def main():
     app.run(debug=True,
             port=5007)

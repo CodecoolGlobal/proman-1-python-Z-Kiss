@@ -34,16 +34,17 @@ def delete_card_by_id(card_id):
 
 def register_user(user_data):
     data_manager.execute_select(
-    """INSERT INTO user_data (name, email, password)
-    VALUES (%(user_name)s, %(user_email)s, %(user_password)s)
-    RETURNING id
-    """, {"user_name": user_data['name'], "user_email": user_data['email'], "user_password": user_data['psw']}, False)
+        """INSERT INTO user_data (name, email, password)
+        VALUES (%(user_name)s, %(user_email)s, %(user_password)s)
+        RETURNING id
+        """, {"user_name": user_data['name'], "user_email": user_data['email'], "user_password": user_data['psw']}, False)
+
 
 def get_password(user_name):
     return data_manager.execute_select(
         """SELECT password FROM user_data
            WHERE name = %(user_name)s""",
-        {"user_name": user_name}, False )
+        {"user_name": user_name}, False)
 
 
 def delete_board_by_id(board_id):
@@ -61,13 +62,14 @@ def add_new_board(title):
         VALUES (%(title)s)
         RETURNING id,title;
         """
-    , {"title":title}, False)
+        , {"title": title}, False)
+
 
 def get_order_for_column(board_id):
     return data_manager.execute_select("""
-    SELECT MAX(column_order) AS order FROM columns
+    SELECT COALESCE(MAX(column_order), 1)  AS order FROM columns
     WHERE board_id = %(id_of_board)s
-    """,{"id_of_board": board_id}, False)
+    """, {"id_of_board": board_id}, False)
 
 
 def delete_column_by_id(column_id):
@@ -83,38 +85,26 @@ def add_new_status(title, color):
     INSERT INTO statuses (title, color)
     VALUES (%(title_of_status)s, %(color_of_status)s)
     RETURNING id
-    """,{"title_of_status": title, "color_of_status": color}, False)
+    """, {"title_of_status": title, "color_of_status": color}, False)
+
 
 def add_new_column(board_id, status_id, order):
     return data_manager.execute_select("""
     INSERT INTO columns (board_id, status_id, column_order)
     VALUES (%(id_of_board)s, %(id_of_status)s, %(order_of_column)s)
     RETURNING id, board_id
-    """,{"id_of_board": board_id, "id_of_status": status_id, "order_of_column": order}, False)
+    """, {"id_of_board": board_id, "id_of_status": status_id, "order_of_column": order}, False)
 
-def add_default_columns(board_id):
-    return data_manager.execute_select("""
-    WITH new_column AS (
-    INSERT INTO columns (board_id, status_id, column_order)
-    VALUES 
-    (%(id_of_board)s, 1, 1),
-    (%(id_of_board)s, 2, 2), 
-    (%(id_of_board)s, 3, 3),
-    (%(id_of_board)s, 4, 4)
-    RETURNING *)
-    SELECT * FROM new_column
-    ORDER BY column_order;
-    """, {"id_of_board": board_id})
 
 def create_new_card(title, order, board_id, status_id):
-
     return data_manager.execute_select(
         """
         INSERT INTO cards (board_id, status_id, title, card_order)
         VALUES (%(board_id)s, %(id_of_status)s, %(title)s, %(order)s)
         RETURNING id, status_id, board_id, card_order;
         """
-        ,{"board_id": board_id,"id_of_status":status_id, "title": title, "order": order}, False)
+        , {"board_id": board_id, "id_of_status": status_id, "title": title, "order": order}, False)
+
 
 def get_card_order(board_id):
     return data_manager.execute_select("""
@@ -129,17 +119,32 @@ def change_title(card_data):
     SET title = %(title)s
     WHERE id = %(id)s 
     RETURNING id;""",
-            {'title': card_data['cardTitle'], 'id': card_data['cardId']})
+                                       {'title': card_data['cardTitle'], 'id': card_data['cardId']})
 
 
-def change_column_title(column_data):
+def get_status_for_column(column_id):
+    return data_manager.execute_select("""
+    SELECT status_id FROM columns
+    WHERE id = %(id_of_column)s;
+    """, {"id_of_column": column_id}, False)
+
+
+def delete_cards_by_column_id(column_id):
+    return data_manager.execute_select("""
+    DELETE FROM cards
+    WHERE status_id = %(column_id)s
+    RETURNING 'true'
+    """, {"column_id": column_id})
+
+
+def change_status_title(status_id, column_title):
     return data_manager.execute_select("""
     UPDATE statuses
     SET title = %(title)s
     WHERE id = %(id)s
     RETURNING id;
     """,
-        {'title': column_data['columnTitle'], 'id': column_data['columnId']}, False)
+                                       {'title': column_title, 'id': status_id}, False)
 
 
 def change_title_board(board_data):
@@ -149,6 +154,7 @@ def change_title_board(board_data):
     WHERE id = %(id)s
     RETURNING id, title;""",
                                        {'title': board_data['boardTitle'], 'id': board_data['boardId']})
+
 
 def get_columns_for_board(board_id):
     return data_manager.execute_select("""

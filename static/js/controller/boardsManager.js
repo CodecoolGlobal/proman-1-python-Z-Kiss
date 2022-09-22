@@ -7,10 +7,10 @@ export let boardsManager = {
     loadBoards: async function () {
         const root = document.querySelector('#root')
         root.replaceChildren()
-        const boards= await dataHandler.getBoards();
+        const boards = await dataHandler.getBoards();
         createMultipleBoard(boards)
         await createMultipleContainers(boards)
-        deleteColumnHandler ()
+        deleteColumnHandler()
         boards.forEach((board) => {
             cardsManager.loadCards(board.id)
 
@@ -39,16 +39,15 @@ export let boardsManager = {
             rename.addEventListener('dblclick', (event) => {
                 let columnId = event.currentTarget.parentNode.dataset.columnId
                 let inputField = document.querySelector('input')
-                 if (inputField === null) {
-                     event.target.innerHTML = `<input id="input-field" type="text" required><button data-column-id="${columnId}" id="button-save">Save</button>`
-                     const saveButton = document.querySelector(`#button-save`)
-                     saveButton.addEventListener('click',  (event) => {
-                         let inputField = document.querySelector('input')
-                         console.log(inputField.value, event.currentTarget.dataset.columnId)
+                if (inputField === null) {
+                    event.target.innerHTML = `<input id="input-field" type="text" required><button data-column-id="${columnId}" id="button-save">Save</button>`
+                    const saveButton = document.querySelector(`#button-save`)
+                    saveButton.addEventListener('click', (event) => {
+                        let inputField = document.querySelector('input')
                         dataHandler.renameColumns(inputField.value, event.currentTarget.dataset.columnId)
                         rename.innerHTML = `<span>${inputField.value}</span>`
-                     })
-                 }
+                    })
+                }
             })
         })
     },
@@ -103,48 +102,58 @@ function initBoardEvents(board) {
         `.add-new-card[data-board-id = "${board.id}"]`,
         'click',
         (event) => cardsManager.addNewCard(event));
-    domManager.addEventListener(`.add-new-column[data-board-id="${board.id}"]`,'click', (event) =>{
+    domManager.addEventListener(`.add-new-column[data-board-id="${board.id}"]`, 'click', (event) => {
+
         let inputFields = document.querySelector('input')
-        if (inputFields === null){
+        if (inputFields === null) {
+            let boardBody = document.querySelector(`.board-body[data-board-id="${event.currentTarget.dataset.boardId}"]`)
+            if (boardBody.classList.contains('hidden')) {
+                boardBody.classList.remove('hidden')
+            }
             createNewContainer(event.currentTarget.dataset.boardId)
         }
 
     })
 }
 
-function createMultipleBoard(boards){
-    for (let board of boards){
+function createMultipleBoard(boards) {
+    for (let board of boards) {
         createBoard(board)
         initBoardEvents(board)
     }
 }
-function createBoard(boardData){
+
+function createBoard(boardData) {
     const boardBuilder = htmlFactory(htmlTemplates.board)
     let board = boardBuilder(boardData)
     domManager.addChild('#root', board)
 }
-async function createMultipleContainers(boards){
-    for (let board of boards){
+
+async function createMultipleContainers(boards) {
+    for (let board of boards) {
         let container = await createContainers(board.id)
         domManager.addChild(`.board-body[data-board-id="${board.id}"`, container)
         initDropZone(board.id)
+
     }
+
 }
-async function createContainers(boardId){
+
+async function createContainers(boardId) {
     const containerBuilder = htmlFactory(htmlTemplates.cardContainer)
     let container = ""
     let containersData = await dataHandler.getColumns(boardId)
-        for (let containerData of containersData){
-            container += containerBuilder(containerData)
-        }
+    for (let containerData of containersData) {
+        container += containerBuilder(containerData)
+    }
     return container
 }
 
 
-function createNewContainer(boardId){
+function createNewContainer(boardId) {
     const inputContainerBuilder = htmlFactory(htmlTemplates.addNewContainer)
     let inputContainer = inputContainerBuilder(boardId)
-    domManager.addChild(`.board-body[data-board-id="${boardId}"]`,inputContainer)
+    domManager.addChild(`.board-body[data-board-id="${boardId}"]`, inputContainer)
 
     domManager.addEventListener(`#save-column[data-board-id="${boardId}"]`, 'click', async () => {
         let containerTitle = document.querySelector('#column-title').value
@@ -154,22 +163,24 @@ function createNewContainer(boardId){
         document.querySelector(`#card-container-input`).remove()
         domManager.addChild(`.board-body[data-board-id="${boardId}"]`, containerBuilder(containerData))
         initDropZone(boardId)
+        boardsManager.renameColumns()
+        deleteColumnHandler()
     })
 }
 
-function initDropZone(boardId){
+function initDropZone(boardId) {
     const dropZones = document.querySelectorAll(`.card-slot[data-board-id="${boardId}"]`)
     dropZones.forEach((zone) => {
-        zone.addEventListener('dragover',(event)=>{
+        zone.addEventListener('dragover', (event) => {
             event.preventDefault()
         })
-        zone.addEventListener('dragenter',(event)=>{
+        zone.addEventListener('dragenter', (event) => {
             event.preventDefault()
         })
-        zone.addEventListener('drop',(event)=>{
+        zone.addEventListener('drop', (event) => {
 
             let card = document.querySelector(`.dragging`)
-            if (card.dataset.boardId === event.target.dataset.boardId && event.target.classList.contains('card-slot')){
+            if (card.dataset.boardId === event.target.dataset.boardId && event.target.classList.contains('card-slot')) {
                 card.style.background = event.target.dataset.color
                 event.target.appendChild(document.querySelector(`.dragging`))
                 dataHandler.updateCardStatus(card.dataset.cardId, event.target.dataset.status)
@@ -179,12 +190,12 @@ function initDropZone(boardId){
 
 }
 
-function deleteColumnHandler () {
+function deleteColumnHandler() {
     const deleteButtons = document.querySelectorAll('.delete-column-btn')
     deleteButtons.forEach((deleteButton) => {
         deleteButton.addEventListener('click', (event) => {
             document.querySelector(`.card-container[data-column-id="${event.currentTarget.dataset.columnId}"]`).remove()
-            const columnId= event.currentTarget.dataset.columnId
+            const columnId = event.currentTarget.dataset.columnId
             dataHandler.deleteColumn(columnId)
         })
     })

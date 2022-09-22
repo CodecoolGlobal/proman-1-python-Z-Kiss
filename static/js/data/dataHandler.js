@@ -58,26 +58,25 @@ export let dataHandler = {
         }
         return await apiPatch(`/api/boards`, payload)
     },
-    getColumns: async function (boardId){
-        return  await apiGet(`/api/columns/${boardId}`)
+    getColumns: async function (boardId) {
+        return await apiGet(`/api/columns/${boardId}`)
     },
-    renameColumns : async function (columnTitle, columnId) {
+    renameColumns: async function (columnTitle, columnId) {
         const payload = {
-            'columnTitle' : columnTitle,
-            'columnId' : columnId
-
+            'column_title': columnTitle,
+            'column_id': columnId
         }
         return await apiPatch(`/api/column/rename`, payload)
     },
-    registerNewContainer: async function(boardId, title, color){
+    registerNewContainer: async function (boardId, title, color) {
         let payload = {
             "board_id": boardId,
             "title": title,
             "color": color
         }
-        return await apiPost('/api/columns/create',payload)
+        return await apiPost('/api/columns/create', payload)
     },
-    updateCardStatus: async function (cardId, cardStatusId){
+    updateCardStatus: async function (cardId, cardStatusId) {
 
         let payload = {
             "card_id": cardId,

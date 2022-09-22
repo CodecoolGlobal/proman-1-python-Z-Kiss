@@ -6,9 +6,7 @@ export let cardsManager = {
     loadCards: async function (boardId) {
         clearCardSlot(boardId)
         const cards = await dataHandler.getCardsByBoardId(boardId);
-        console.log(cards)
         for (let card of cards) {
-            console.log(card)
             const cardBuilder = htmlFactory(htmlTemplates.card);
             const content = cardBuilder(card);
             domManager.addChild(`.card-slot[data-board-id="${boardId}"][data-status="${card.status_id}"]`, content);
@@ -44,21 +42,21 @@ export let cardsManager = {
         }
         let inputField = document.querySelector('input')
         if (inputField === null) {
-            console.log(event.currentTarget)
-            console.log(event.target)
             const addCardBuilder = htmlFactory(htmlTemplates.addCard);
             const addCard = addCardBuilder(event.currentTarget.dataset.boardId);
             domManager.addChild(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"]`, addCard)
             domManager.addEventListener('#new-card-save-btn', 'click', async (event) => {
                 let inputField = document.querySelector('input')
                 let inputCardTitle = inputField.value
-                let cardStatus = document.querySelector(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"]`).dataset.status
+                let cardSlot = document.querySelector(`.card-slot[data-board-id="${event.currentTarget.dataset.boardId}"]`)
+                let cardStatus = cardSlot.dataset.status
+                let cadColor = cardSlot.dataset.color
                 let promise = await dataHandler.createNewCard(inputCardTitle, event.currentTarget.dataset.boardId, cardStatus)
                 let card = {
                     "id": promise.id,
                     "board_id": promise.board_id,
                     "title": inputCardTitle,
-                    "color": "#590000",
+                    "color": cadColor,
                     "status_id": promise.status_id
                 }
                 this.newCardBuilder(card)
