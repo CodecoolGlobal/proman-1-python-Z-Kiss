@@ -36,17 +36,15 @@ export let boardsManager = {
     renameColumns: function () {
         const renameFields = document.querySelectorAll(`.card-title > span`)
         renameFields.forEach((rename) => {
-            // console.log(rename.parentNode.dataset.columnId)
-            // console.log(rename)
             rename.addEventListener('dblclick', (event) => {
-                // console.log(event.currentTarget.parentNode.dataset.columnId)
                 let columnId = event.currentTarget.parentNode.dataset.columnId
                 let inputField = document.querySelector('input')
                  if (inputField === null) {
                      event.target.innerHTML = `<input id="input-field" type="text" required><button data-column-id="${columnId}" id="button-save">Save</button>`
                      const saveButton = document.querySelector(`#button-save`)
                      saveButton.addEventListener('click',  (event) => {
-                          let inputField = document.querySelector('input')
+                         let inputField = document.querySelector('input')
+                         console.log(inputField.value, event.currentTarget.dataset.columnId)
                         dataHandler.renameColumns(inputField.value, event.currentTarget.dataset.columnId)
                         rename.innerHTML = `<span>${inputField.value}</span>`
                      })

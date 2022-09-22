@@ -109,6 +109,8 @@ def change_title_for_board():
 @json_response
 def change_title_for_columns():
     column_data = request.get_json()
+    id = queries.change_column_title(column_data)
+    print(id)
     return queries.change_column_title(column_data)
 
 
