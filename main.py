@@ -42,12 +42,15 @@ def login():
 @app.route("/api/boards/create", methods=['POST'])
 @json_response
 def create_board():
-    return queries.add_new_board(request.json["title"])
+    board = queries.add_new_board(request.json["title"])
+    queries.add_default_columns(board['id'])
+    return board
 
 @app.route("/api/boards")
 @json_response
 def get_boards():
-    return queries.get_boards()
+    boards = queries.get_boards()
+    return boards
 
 
 @app.route("/api/cards/create", methods=['POST'])
@@ -55,8 +58,13 @@ def get_boards():
 def add_cards():
     card_data = request.get_json()
     order = queries.get_card_order(card_data['boardId'])
-    card_id = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["boardId"])
-    return {"id": card_id['id']}
+    card_data = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["boardId"])
+    return card_data
+
+@app.route('/api/columns/<int:board_id>')
+@json_response
+def get_columns_by_board_id(board_id: int):
+    return queries.get_columns_for_board(board_id)
 
 
 @app.route("/api/boards/<int:board_id>/cards/")
@@ -93,6 +101,24 @@ def change_title_for_board():
 @json_response
 def delete_board_by_id(board_id: int):
     return queries.delete_board_by_id(board_id)
+
+
+@app.route('/api/columns/create', methods=['POST'])
+@json_response
+def add_new_column():
+    board_id = request.json["board_id"]
+    title = request.json["title"]
+    color = request.json["color"]
+    order = queries.get_order_for_column(board_id)
+    status_id = queries.add_new_status(title, color)
+    column_id = queries.add_new_column(board_id, status_id["id"], order["order"])
+    column = {
+        "id": column_id["id"],
+        "status_id": status_id["id"],
+        "title": title,
+        "color": color
+    }
+    return column
 
 
 def main():
