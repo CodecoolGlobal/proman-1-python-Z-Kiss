@@ -127,8 +127,9 @@ def change_column_title(column_data):
     UPDATE statuses
     SET title = %(title)s
     WHERE id = %(id)s
+    RETURNING id;
     """,
-                                       {'title': column_data['columnTitle'], 'id': column_data['columnId']})
+                                       {'title': column_data['columnTitle'], 'id': column_data['columnId']}, False)
 
 
 def change_title_board(board_data):

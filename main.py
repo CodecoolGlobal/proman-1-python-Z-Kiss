@@ -97,7 +97,7 @@ def change_title_for_board():
     return queries.change_title_board(board_data)
 
 
-@app.route('/api/columns', methods=['PATCH'])
+@app.route('/api/column/rename', methods=['PATCH'])
 @json_response
 def change_title_for_columns():
     column_data = request.get_json()
