@@ -14,7 +14,7 @@ def get_boards():
 def get_cards_for_board(board_id):
     matching_cards = data_manager.execute_select(
         """
-        SELECT cards.id, cards.status_id, cards.title, s.color FROM cards
+        SELECT cards.id, cards.board_id,cards.card_order AS order, cards.status_id, cards.title, s.color FROM cards
         inner join statuses s on s.id = cards.status_id
         WHERE cards.board_id = %(board_id)s
         ORDER BY status_id, card_order;
@@ -135,3 +135,12 @@ def get_columns_for_board(board_id):
     WHERE board_id = %(id_of_board)s
     ORDER BY columns.column_order;
     """, {"id_of_board": board_id})
+
+
+def change_card_status(card_id, status_id):
+    return data_manager.execute_select("""
+    UPDATE cards
+    SET status_id = %(id_of_status)s
+    WHERE cards.id = %(id_of_card)s
+    RETURNING id
+    """, {"id_of_status": status_id, "id_of_card": card_id}, False)

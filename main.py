@@ -120,7 +120,13 @@ def add_new_column():
     }
     return column
 
-
+@app.route('/api/card/change-status', methods=['PATCH'])
+@json_response
+def change_card_status():
+    card_id = request.json['card_id']
+    card_status_id = request.json['card_status_id']
+    print(card_id, card_status_id)
+    return queries.change_card_status(card_id, card_status_id)
 def main():
     app.run(debug=True)
 

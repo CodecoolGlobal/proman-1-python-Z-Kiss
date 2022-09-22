@@ -26,7 +26,6 @@ export let dataHandler = {
             "title": title,
             "boardId": boardId
         }
-
         return await apiPost('/api/cards/create', cardData)
     },
     registerUser: async function (userData) {
@@ -68,6 +67,14 @@ export let dataHandler = {
             "color": color
         }
         return await apiPost('/api/columns/create',payload)
+    },
+    updateCardStatus: async function (cardId, cardStatusId){
+
+        let payload = {
+            "card_id": cardId,
+            "card_status_id": cardStatusId
+        }
+        await apiPatch('/api/card/change-status', payload)
     }
 };
 

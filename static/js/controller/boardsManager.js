@@ -88,7 +88,6 @@ function initBoardEvents(board) {
         }
 
     })
-
 }
 
 function createMultipleBoard(boards){
@@ -106,6 +105,7 @@ async function createMultipleContainers(boards){
     for (let board of boards){
         let container = await createContainers(board.id)
         domManager.addChild(`.board-body[data-board-id="${board.id}"`, container)
+        initDropZone(board.id)
     }
 }
 async function createContainers(boardId){
@@ -132,4 +132,31 @@ function createNewContainer(boardId){
         domManager.addChild(`.board-body[data-board-id="${boardId}"]`, containerBuilder(containerData))
 
     })
+}
+
+function initDropZone(boardId){
+    const dropZones = document.querySelectorAll(`.card-slot[data-board-id="${boardId}"]`)
+    dropZones.forEach((zone) => {
+        zone.addEventListener('dragover',(event)=>{
+            event.preventDefault()
+        })
+    })
+    dropZones.forEach((zone) => {
+        zone.addEventListener('dragenter',(event)=>{
+            event.preventDefault()
+        })
+    })
+    dropZones.forEach((zone) =>{
+        zone.addEventListener('drop',(event)=>{
+
+            let card = document.querySelector(`.dragging`)
+            if (card.dataset.boardId === event.target.dataset.boardId && event.target.classList.contains('card-slot')){
+                card.style.background = event.target.dataset.color
+                event.target.appendChild(document.querySelector(`.dragging`))
+                dataHandler.updateCardStatus(card.dataset.cardId, event.target.dataset.status)
+            }
+
+        })
+    })
+
 }

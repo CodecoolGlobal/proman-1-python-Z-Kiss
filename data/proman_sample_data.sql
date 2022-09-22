@@ -58,6 +58,11 @@ INSERT INTO statuses(title, color) VALUES ('new', '#590000');
 INSERT INTO statuses(title, color) VALUES ('in progress', '#594300');
 INSERT INTO statuses(title, color) VALUES ('testing', '#525900');
 INSERT INTO statuses(title, color) VALUES ('done', '#085900');
+INSERT INTO statuses(title, color) VALUES ('new', '#590000');
+INSERT INTO statuses(title, color) VALUES ('in progress', '#594300');
+INSERT INTO statuses(title, color) VALUES ('testing', '#525900');
+INSERT INTO statuses(title, color) VALUES ('done', '#085900');
+
 
 INSERT INTO boards(title) VALUES ('Board 1');
 INSERT INTO boards(title) VALUES ('Board 2');
@@ -79,10 +84,10 @@ INSERT INTO columns VALUES (nextval('columns_id_seq'),1,1,1);
 INSERT INTO columns VALUES (nextval('columns_id_seq'),1,2,2);
 INSERT INTO columns VALUES (nextval('columns_id_seq'),1,3,3);
 INSERT INTO columns VALUES (nextval('columns_id_seq'),1,4,4);
-INSERT INTO columns VALUES (nextval('columns_id_seq'),2,1,1);
-INSERT INTO columns VALUES (nextval('columns_id_seq'),2,2,2);
-INSERT INTO columns VALUES (nextval('columns_id_seq'),2,3,3);
-INSERT INTO columns VALUES (nextval('columns_id_seq'),2,4,4);
+INSERT INTO columns VALUES (nextval('columns_id_seq'),2,5,1);
+INSERT INTO columns VALUES (nextval('columns_id_seq'),2,6,2);
+INSERT INTO columns VALUES (nextval('columns_id_seq'),2,7,3);
+INSERT INTO columns VALUES (nextval('columns_id_seq'),2,8,4);
 
 ---
 --- add constraints
