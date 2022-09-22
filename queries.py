@@ -14,7 +14,7 @@ def get_boards():
 def get_cards_for_board(board_id):
     matching_cards = data_manager.execute_select(
         """
-        SELECT cards.id, cards.status_id, cards.title, s.color FROM cards
+        SELECT cards.id, cards.board_id,cards.card_order AS order, cards.status_id, cards.title, s.color FROM cards
         inner join statuses s on s.id = cards.status_id
         WHERE cards.board_id = %(board_id)s
         ORDER BY status_id, card_order;
@@ -69,6 +69,15 @@ def get_order_for_column(board_id):
     WHERE board_id = %(id_of_board)s
     """,{"id_of_board": board_id}, False)
 
+
+def delete_column_by_id(column_id):
+    query = '''
+        DELETE FROM columns WHERE id=%(column_id)s
+        RETURNING id;
+    '''
+    return data_manager.execute_select(query, {'column_id': column_id}, False)
+
+
 def add_new_status(title, color):
     return data_manager.execute_select("""
     INSERT INTO statuses (title, color)
@@ -80,8 +89,9 @@ def add_new_column(board_id, status_id, order):
     return data_manager.execute_select("""
     INSERT INTO columns (board_id, status_id, column_order)
     VALUES (%(id_of_board)s, %(id_of_status)s, %(order_of_column)s)
-    RETURNING id
+    RETURNING id, board_id
     """,{"id_of_board": board_id, "id_of_status": status_id, "order_of_column": order}, False)
+
 def add_default_columns(board_id):
     return data_manager.execute_select("""
     WITH new_column AS (
@@ -96,15 +106,15 @@ def add_default_columns(board_id):
     ORDER BY column_order;
     """, {"id_of_board": board_id})
 
-def create_new_card(title, order, board_id):
+def create_new_card(title, order, board_id, status_id):
 
     return data_manager.execute_select(
         """
         INSERT INTO cards (board_id, status_id, title, card_order)
-        VALUES (%(board_id)s, 1, %(title)s, %(order)s)
-        RETURNING id, board_id;
+        VALUES (%(board_id)s, %(id_of_status)s, %(title)s, %(order)s)
+        RETURNING id, status_id, board_id, card_order;
         """
-        ,{"board_id": board_id, "title": title, "order": order}, False)
+        ,{"board_id": board_id,"id_of_status":status_id, "title": title, "order": order}, False)
 
 def get_card_order(board_id):
     return data_manager.execute_select("""
@@ -147,3 +157,12 @@ def get_columns_for_board(board_id):
     WHERE board_id = %(id_of_board)s
     ORDER BY columns.column_order;
     """, {"id_of_board": board_id})
+
+
+def change_card_status(card_id, status_id):
+    return data_manager.execute_select("""
+    UPDATE cards
+    SET status_id = %(id_of_status)s
+    WHERE cards.id = %(id_of_card)s
+    RETURNING id
+    """, {"id_of_status": status_id, "id_of_card": card_id}, False)

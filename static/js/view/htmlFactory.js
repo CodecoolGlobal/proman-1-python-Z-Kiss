@@ -40,7 +40,7 @@ function boardBuilder(board) {
                         <button class="delete-board-btn" data-board-id="${board.id}">
                             <i class="fa fa-trash-o"></i>
                         </button>
-                        <button class="add-new-card" data-board-id=${board.id} data-status="1">Add new card</button>
+                        <button class="add-new-card" data-board-id=${board.id}>Add new card</button>
                         <button class="add-new-column" data-board-id=${board.id}>Add new Column</button>
                         <button class="toggle-board-button" data-board-id=${board.id}>Show Cards</button>
                     </div>
@@ -50,26 +50,29 @@ function boardBuilder(board) {
             </div>`;
 }
 function buildCardContainer(column){
-    return `<div class="card-container">
-               <div class="card-title" style="background: ${column.color}" data-column-id="${column.id}"><span>${column.title}</span></div>
-               <div class="card-slot" data-board-id="${column.board_id}" data-status="${column.status_id}"></div>
+    return `<div class="card-container" data-board-id="${column.board_id}" data-column-id="${column.id}">
+               <div class="card-title" style="background: ${column.color}" data-column-id="${column.id}">
+                    <span>${column.title}</span>
+                    <button class="delete-column-btn" data-column-id="${column.id}">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
+               </div>
+               <div class="card-slot" data-color="${column.color}" data-board-id="${column.board_id}" data-status="${column.status_id}"></div>
            </div>`;
 }
 function cardBuilder(card) {
     return `
-            <div class="card" style="background-color: ${card.color}" data-board-id="${card.board_id}" data-card-order="${card.card_order}" data-card-id="${card.id}"><span>${card.title}</span>
+            <div draggable="true" class="card" style="background-color: ${card.color}" data-board-id="${card.board_id}" data-card-order="${card.order}" data-card-id="${card.id}"><span>${card.title}</span>
                 <button class="delete-btn" data-card-id="${card.id}">
                     <i class="fa fa-trash-o"></i>
                 </button>
             </div>`;
-
-
 }
-function addNewCard() {
+function addNewCard(boardId) {
     return `
             <div class="card new-card">
                 <span>
-                <input type="text" id="add-card-input" name="add-card-input" required><button id="new-card-save-btn">Save</button>
+                <input type="text" id="add-card-input" name="add-card-input" required><button id="new-card-save-btn" data-board-id="${boardId}">Save</button>
                 </span>
             </div>`;
 }
@@ -131,10 +134,10 @@ function addNewContainer(boardId){
                <div class="card-title-container" style="margin-top: 5px" >
                     Title:<input id="column-title" type="text"><br>
                     Color: <input id="column-color" type="color">
-                    
-                <div class="card-slot" style="border: none;margin-top: 5px" >
-                    <button id="save-column" data-board-id="${boardId}" style="margin-top: 5px">Save</button></div>
-                </div>
+                     <button id="save-column" data-board-id="${boardId}" style="margin-top: 5px">Save</button></div>
+<!--                <div class="card-slot" style="border: none;margin-top: 5px" >-->
+                   
+<!--                </div>-->
            </div>`;
 }
 

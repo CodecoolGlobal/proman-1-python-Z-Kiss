@@ -21,12 +21,12 @@ export let dataHandler = {
         const response = apiDelete(`/api/boards/${boardId}`);
         return response
     },
-    createNewCard: async function (title, boardId) {
+    createNewCard: async function (title, boardId, statusId) {
         let cardData = {
             "title": title,
-            "boardId": boardId
+            "board_id": boardId,
+            "status_id": statusId
         }
-
         return await apiPost('/api/cards/create', cardData)
     },
     registerUser: async function (userData) {
@@ -76,6 +76,18 @@ export let dataHandler = {
             "color": color
         }
         return await apiPost('/api/columns/create',payload)
+    },
+    updateCardStatus: async function (cardId, cardStatusId){
+
+        let payload = {
+            "card_id": cardId,
+            "card_status_id": cardStatusId
+        }
+        await apiPatch('/api/card/change-status', payload)
+    },
+    deleteColumn: async function (columnId) {
+        const response = apiDelete(`/api/columns/${columnId}`);
+        return response
     }
 };
 

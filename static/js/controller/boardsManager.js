@@ -10,6 +10,7 @@ export let boardsManager = {
         const boards= await dataHandler.getBoards();
         createMultipleBoard(boards)
         await createMultipleContainers(boards)
+        deleteColumnHandler ()
         boards.forEach((board) => {
             cardsManager.loadCards(board.id)
 
@@ -87,7 +88,6 @@ async function createNewBoard(board) {
     domManager.addChild("#root", newBoard)
     initBoardEvents(board)
     let container = await createContainers(board.id)
-    console.log(container)
     domManager.addChild(`.board-body[data-board-id="${board.id}"`, container)
 
 }
@@ -112,7 +112,6 @@ function initBoardEvents(board) {
         }
 
     })
-
 }
 
 function createMultipleBoard(boards){
@@ -130,6 +129,7 @@ async function createMultipleContainers(boards){
     for (let board of boards){
         let container = await createContainers(board.id)
         domManager.addChild(`.board-body[data-board-id="${board.id}"`, container)
+        initDropZone(board.id)
     }
 }
 async function createContainers(boardId){
@@ -155,7 +155,39 @@ function createNewContainer(boardId){
         const containerBuilder = htmlFactory(htmlTemplates.cardContainer)
         document.querySelector(`#card-container-input`).remove()
         domManager.addChild(`.board-body[data-board-id="${boardId}"]`, containerBuilder(containerData))
-
+        initDropZone(boardId)
     })
 }
 
+function initDropZone(boardId){
+    const dropZones = document.querySelectorAll(`.card-slot[data-board-id="${boardId}"]`)
+    dropZones.forEach((zone) => {
+        zone.addEventListener('dragover',(event)=>{
+            event.preventDefault()
+        })
+        zone.addEventListener('dragenter',(event)=>{
+            event.preventDefault()
+        })
+        zone.addEventListener('drop',(event)=>{
+
+            let card = document.querySelector(`.dragging`)
+            if (card.dataset.boardId === event.target.dataset.boardId && event.target.classList.contains('card-slot')){
+                card.style.background = event.target.dataset.color
+                event.target.appendChild(document.querySelector(`.dragging`))
+                dataHandler.updateCardStatus(card.dataset.cardId, event.target.dataset.status)
+            }
+        })
+    })
+
+}
+
+function deleteColumnHandler () {
+    const deleteButtons = document.querySelectorAll('.delete-column-btn')
+    deleteButtons.forEach((deleteButton) => {
+        deleteButton.addEventListener('click', (event) => {
+            document.querySelector(`.card-container[data-column-id="${event.currentTarget.dataset.columnId}"]`).remove()
+            const columnId= event.currentTarget.dataset.columnId
+            dataHandler.deleteColumn(columnId)
+        })
+    })
+}

@@ -57,8 +57,10 @@ def get_boards():
 @json_response
 def add_cards():
     card_data = request.get_json()
-    order = queries.get_card_order(card_data['boardId'])
-    card_data = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["boardId"])
+    print(card_data)
+    order = queries.get_card_order(card_data['board_id'])
+    status_id = card_data['status_id']
+    card_data = queries.create_new_card(request.json["title"], order['count'] + 1, request.json["board_id"], status_id)
     return card_data
 
 @app.route('/api/columns/<int:board_id>')
@@ -75,6 +77,12 @@ def get_cards_for_board(board_id: int):
     :param board_id: id of the parent board
     """
     return queries.get_cards_for_board(board_id)
+
+
+@app.route("/api/columns/<int:column_id>", methods=['DELETE'])
+@json_response
+def delete_column_by_id(column_id: int):
+    return queries.delete_column_by_id(column_id)
 
 
 @app.route("/api/cards/<int:card_id>", methods=['DELETE'])
@@ -122,13 +130,20 @@ def add_new_column():
     column_id = queries.add_new_column(board_id, status_id["id"], order["order"])
     column = {
         "id": column_id["id"],
+        "board_id":column_id['board_id'],
         "status_id": status_id["id"],
         "title": title,
         "color": color
     }
     return column
 
-
+@app.route('/api/card/change-status', methods=['PATCH'])
+@json_response
+def change_card_status():
+    card_id = request.json['card_id']
+    card_status_id = request.json['card_status_id']
+    print(card_id, card_status_id)
+    return queries.change_card_status(card_id, card_status_id)
 def main():
     app.run(debug=True,
             port=5007)
