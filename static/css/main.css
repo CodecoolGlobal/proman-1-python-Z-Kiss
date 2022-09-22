@@ -26,7 +26,7 @@ body{
     display: flex;
     flex-direction: row;
 }
-.card-container{
+.card-container {
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -50,18 +50,6 @@ body{
     align-items: center;
     align-content: center;
 
-}
-.new{
-    background-color: #590000;
-}
-.in-progress{
-    background-color: #594300;
-}
-.testing{
-    background-color: #525900;
-}
-.done{
-    background-color: #085900;
 }
 
 .card{
@@ -128,15 +116,16 @@ body{
 }
 
 input {
-    background-color: transparent;
-    border: none;
+    background-color: white;
+
     width: 100px
 }
 
 .delete-btn {
     display: flex;
     justify-items: end;
-    background-color: transparent;
+    background-color: white;
+    border-radius: 70px;
     border: none;
 }
 
@@ -146,4 +135,32 @@ input {
     justify-items: end;
     background-color: transparent;
     border: none;
+}
+.hidden{
+    display: none;
+}
+.board-button-container{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.card.new-card{
+    border: none;
+}
+.card-title-container{
+    display: flex;
+    flex-direction: column;
+    color: black;
+    align-content: center;
+    align-items: center;
+
+}
+#card-container-input{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    margin: 5px;
+    min-height: 100px;
+    border-style: groove;
+    border-width: 10px;
 }

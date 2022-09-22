@@ -5,3 +5,4 @@ venv
 .env.template
 test.html
 .env
+test.*
